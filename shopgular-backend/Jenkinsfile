@@ -1,0 +1,53 @@
+pipeline {
+    environment {
+        dockerImage = ''
+        registry = 'YourDockerhubAccount/shopgular-backend'
+        registryCredential = 'shopgular-docker'
+    }
+    agent any
+    options { timestamps() }
+    tools { maven 'MAVEN_HOME' }
+    stages {
+        stage('Initializing app') {
+            steps {
+                sh 'mvn clean install -DskipTests'
+            }
+        }
+        stage('Testing app') {
+            steps {
+                sh 'mvn test jacoco:report'
+            }
+        }
+        stage('Checking code quality') {
+            steps {
+                sh 'mvn sonar:sonar -Dsonar.login=admin -Dsonar.password=shopgular'
+            }
+        }
+        stage('Deploying artifact') {
+            steps {
+                sh 'mvn deploy -DskipTests'
+            }
+        }
+        stage('Building image') {
+            steps {
+                script {
+                    dockerImage = docker.build registry + ":$BUILD_NUMBER"
+                }
+            }
+        }
+        stage('Deploying image') {
+            steps {
+                script {
+                    docker.withRegistry('', registryCredential) {
+                        dockerImage.push()
+                    }
+                }
+            }
+        }
+        stage('Cleaning up') {
+            steps {
+                sh "docker rmi $registry:$BUILD_NUMBER"
+            }
+        }
+    }
+}

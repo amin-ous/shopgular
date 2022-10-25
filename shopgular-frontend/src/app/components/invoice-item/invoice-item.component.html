@@ -1,0 +1,30 @@
+<div class="row">
+  <div class="col-md-11" style="margin-left: 20px">
+    <h3 style="margin-top: 20px">Invoice Items</h3>
+    <hr>
+    <a routerLink="/invoice"><button class="btn btn-round btn-sm btn-secondary">Back</button></a>
+    <br><br>
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Sale Price</th>
+          <th>Discount</th>
+          <th>Percent Decrease</th>
+          <th>Quantity</th>
+          <th>Product</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor='let invoiceItem of invoiceItems'>
+          <td>{{invoiceItem.id}}</td>
+          <td>{{invoiceItem.salePrice}}</td>
+          <td>{{invoiceItem.discount}}</td>
+          <td>{{invoiceItem.percentDecrease}}</td>
+          <td>{{invoiceItem.quantity}}</td>
+          <td>{{invoiceItem.product.wording}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

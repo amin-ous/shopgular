@@ -1,0 +1,38 @@
+version: "3.9"
+services:
+  mysql:
+    image: mysql
+    container_name: mysql
+    restart: unless-stopped
+    env_file: .env
+    ports:
+      - $MYSQL_LOCAL_PORT:$MYSQL_DOCKER_PORT
+    environment:
+      - MYSQL_DATABASE=$MYSQL_DATABASE
+      - MYSQL_ROOT_PASSWORD=$MYSQL_PASSWORD
+  nexus:
+    image: sonatype/nexus3
+    container_name: nexus
+    restart: unless-stopped
+    env_file: .env
+    ports:
+      - $NEXUS_LOCAL_PORT:$NEXUS_DOCKER_PORT
+  sonarqube:
+    image: sonarqube:8-community
+    container_name: sonarqube
+    restart: unless-stopped
+    env_file: .env
+    ports:
+      - $SONARQUBE_LOCAL_PORT:$SONARQUBE_DOCKER_PORT
+  shopgular:
+    image: shopgular-backend:0.0.1
+    container_name: shopgular-backend
+    restart: on-failure
+    env_file: .env
+    ports:
+      - $SHOPGULAR_BACKEND_LOCAL_PORT:$SHOPGULAR_BACKEND_DOCKER_PORT
+    build: .
+    depends_on:
+      - mysql
+      - nexus
+      - sonarqube

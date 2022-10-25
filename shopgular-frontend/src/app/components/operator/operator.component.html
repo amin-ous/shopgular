@@ -1,0 +1,100 @@
+<div class="row">
+  <div class="col-md-11" style="margin-left: 20px">
+    <h3 style="margin-top: 20px">Operators</h3>
+    <hr>
+    <button class="btn btn-round btn-sm btn-success" (click)="openModal(addModal, null)">Add new Operator</button>
+    <br><br>
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Prename</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor='let operator of operators'>
+          <td>{{operator.id}}</td>
+          <td>{{operator.name}}</td>
+          <td>{{operator.prename}}</td>
+          <td>
+            <button type="button" class="btn btn-outline-primary" (click)="openModal(editModal, operator)">Edit</button>
+            &nbsp;
+            <button type="button" class="btn btn-outline-danger"(click)="deleteOperator(operator.id)">Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<ng-template #addModal let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Add new Operator</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  <div class="modal-body">
+    <form>
+      <div class="mb-3">
+        <label for="name">Name</label>
+        <div class="input-group">
+          <input id="name" class="form-control" type="text" [(ngModel)]="operator.name" [ngModelOptions]="{standalone : true}">
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="prename">Prename</label>
+        <div class="input-group">
+          <input id="prename" class="form-control" type="text" [(ngModel)]="operator.prename" [ngModelOptions]="{standalone : true}">
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="password">Password</label>
+        <div class="input-group">
+          <input id="password" class="form-control" type="text" [(ngModel)]="operator.newPassword" [ngModelOptions]="{standalone : true}">
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-success" (click)="addOperator(operator)" (click)="modal.close('Save click')">Add</button>
+    <button type="button" class="btn btn-danger" (click)="modal.close('Save click')">Cancel</button>
+  </div>
+</ng-template>
+<ng-template #editModal let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Edit Operator</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  <div class="modal-body">
+    <form>
+      <div class="mb-3">
+        <label for="name">Name</label>
+        <div class="input-group">
+          <input id="name" class="form-control" type="text" [(ngModel)]="operator.name" [ngModelOptions]="{standalone : true}">
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="prename">Prename</label>
+        <div class="input-group">
+          <input id="prename" class="form-control" type="text" [(ngModel)]="operator.prename" [ngModelOptions]="{standalone : true}">
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="oldPassword">Old Password</label>
+        <div class="input-group">
+          <input id="oldPassword" class="form-control" type="text" [(ngModel)]="operator.oldPassword" [ngModelOptions]="{standalone : true}">
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="newPassword">New Password</label>
+        <div class="input-group">
+          <input id="newPassword" class="form-control" type="text" [(ngModel)]="operator.newPassword" [ngModelOptions]="{standalone : true}">
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-success" (click)="updateOperator(operator)" (click)="modal.close('Save click')">Edit</button>
+    <button type="button" class="btn btn-danger" (click)="modal.close('Save click')">Cancel</button>
+  </div>
+</ng-template>

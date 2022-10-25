@@ -1,0 +1,72 @@
+<div class="row">
+  <div class="col-md-11" style="margin-left: 20px">
+    <h3 style="margin-top: 20px">Invoices</h3>
+    <hr>
+    <button class="btn btn-round btn-sm btn-success" (click)="openModal(addModal, null)">Add new Invoice</button>
+    <br><br>
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Net Price</th>
+          <th>Deduction</th>
+          <th>Creation Date</th>
+          <th>Last Modification Date</th>
+          <th>Archived</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor='let invoice of invoices'>
+          <td>{{invoice.id}}</td>
+          <td>{{invoice.netPrice}}</td>
+          <td>{{invoice.deduction}}</td>
+          <td>{{invoice.creationDate}}</td>
+          <td>{{invoice.lastModificationDate}}</td>
+          <td>{{invoice.archived}}</td>
+          <td>
+            <a routerLink="/invoice/{{invoice.id}}/items"><button type="button" class="btn btn-outline-primary">Items</button></a>
+            &nbsp;
+            <button type="button" class="btn btn-outline-warning" (click)="cancelInvoice(invoice.id)" [hidden]="invoice.archived">Archive</button>
+            &nbsp;
+            <button type="button" class="btn btn-outline-danger"(click)="deleteInvoice(invoice.id)">Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<ng-template #addModal let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Add new Item</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  <div class="modal-body">
+    <form>
+      <div class="mb-3">
+        <label for="percent">Percent Decrease</label>
+        <div class="input-group">
+          <input id="percent" class="form-control" type="text" [(ngModel)]="invoiceItem.percentDecrease" [ngModelOptions]="{standalone : true}">
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="quantity">Quantity</label>
+        <div class="input-group">
+          <input id="quantity" class="form-control" type="text" [(ngModel)]="invoiceItem.quantity" [ngModelOptions]="{standalone : true}">
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="product">Product</label>
+        <div class="input-group">
+          <select id="product" class="form-control" [(ngModel)]="invoiceItem.product" [ngModelOptions]="{standalone : true}">
+            <option *ngFor="let product of products" [ngValue]="product">{{product.wording}}</option>
+          </select>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-success" (click)="addInvoice(invoice)" (click)="modal.close('Save click')">Add</button>
+    <button type="button" class="btn btn-danger" (click)="modal.close('Save click')">Cancel</button>
+  </div>
+</ng-template>

@@ -1,0 +1,10 @@
+version: "3.9"
+services:
+  shopgular-frontend:
+    image: shopgular-frontend:0.0.1
+    container_name: shopgular-frontend
+    restart: on-failure
+    env_file: .env
+    ports:
+    - $SHOPGULAR_FRONTEND_LOCAL_PORT:$SHOPGULAR_FRONTEND_DOCKER_PORT
+    build: .

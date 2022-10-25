@@ -1,0 +1,95 @@
+<div class="row">
+  <div class="col-md-11" style="margin-left: 20px">
+    <h3 style="margin-top: 20px">Stocks</h3>
+    <hr>
+    <button class="btn btn-round btn-sm btn-success" (click)="openModal(addModal, null)">Add new Stock</button>
+    <br><br>
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Wording</th>
+          <th>Current Quantity</th>
+          <th>Minimum Quantity</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor='let stock of stocks'>
+          <td>{{stock.id}}</td>
+          <td>{{stock.wording}}</td>
+          <td>{{stock.currentQuantity}}</td>
+          <td>{{stock.minimumQuantity}}</td>
+          <td>
+            <button type="button" class="btn btn-outline-primary" (click)="openModal(editModal, stock)">Edit</button>
+            &nbsp;
+            <button type="button" class="btn btn-outline-danger"(click)="deleteStock(stock.id)">Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<ng-template #addModal let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Add new Stock</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  <div class="modal-body">
+    <form>
+      <div class="mb-3">
+        <label for="wording">Wording</label>
+        <div class="input-group">
+          <input id="wording" class="form-control" type="text" [(ngModel)]="stock.wording" [ngModelOptions]="{standalone : true}">
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="currentQuantity">Current Quantity</label>
+        <div class="input-group">
+          <input id="currentQuantity" class="form-control" type="text" [(ngModel)]="stock.currentQuantity" [ngModelOptions]="{standalone : true}">
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="minimumQuantity">Minimum Quantity</label>
+        <div class="input-group">
+          <input id="minimumQuantity" class="form-control" type="text" [(ngModel)]="stock.minimumQuantity" [ngModelOptions]="{standalone : true}">
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-success" (click)="addStock(stock)" (click)="modal.close('Save click')">Add</button>
+    <button type="button" class="btn btn-danger" (click)="modal.close('Save click')">Cancel</button>
+  </div>
+</ng-template>
+<ng-template #editModal let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Edit Stock</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  <div class="modal-body">
+    <form>
+      <div class="mb-3">
+        <label for="wording">Wording</label>
+        <div class="input-group">
+          <input id="wording" class="form-control" type="text" [(ngModel)]="stock.wording" [ngModelOptions]="{standalone : true}">
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="currentQuantity">Current Quantity</label>
+        <div class="input-group">
+          <input id="currentQuantity" class="form-control" type="text" [(ngModel)]="stock.currentQuantity" [ngModelOptions]="{standalone : true}">
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="minimumQuantity">Minimum Quantity</label>
+        <div class="input-group">
+          <input id="minimumQuantity" class="form-control" type="text" [(ngModel)]="stock.minimumQuantity" [ngModelOptions]="{standalone : true}">
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-success" (click)="updateStock(stock)" (click)="modal.close('Save click')">Edit</button>
+    <button type="button" class="btn btn-danger" (click)="modal.close('Save click')">Cancel</button>
+  </div>
+</ng-template>
