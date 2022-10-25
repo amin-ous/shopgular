@@ -1,0 +1,17 @@
+# Guest OS timezone
+timezone: Africa/Tunis
+
+# Virtual machine name
+machine_name: shopgular
+
+# Virtual machine IP
+ip: 192.168.56.1
+
+# Virtual machine CPU cores number
+cpus: 4
+
+# Virtual machine RAM
+memory: 6144
+
+# Bash custom prompt
+prompt: \[\e[01;32m\]\u\[\e[m\]\[\e[01;32m\]@\[\e[m\]\[\e[01;32m\]\h\[\e[m\]:\[\e[01;34m\]\w\[\e[m\]\[\e[01;30m\]\[\e[m\]\$\[\e[m\]

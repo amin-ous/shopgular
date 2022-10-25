@@ -1,0 +1,9 @@
+version: "3.9"
+services:
+  shopgular-frontend:
+    image: shopgular-frontend:0.1.0
+    container_name: shopgular-frontend
+    restart: on-failure
+    ports:
+    - $SHOPGULAR_FRONTEND_LOCAL_PORT:$SHOPGULAR_FRONTEND_DOCKER_PORT
+    build: .

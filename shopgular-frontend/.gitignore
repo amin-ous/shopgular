@@ -1,0 +1,40 @@
+# See http://help.github.com/ignore-files/ for more about ignoring files.
+
+# IDEs and editors
+.c9
+.classpath
+.history
+.idea
+.launch
+.project
+.settings
+.sublime-workspace
+.vscode
+
+# System Files
+Thumbs.db
+.DS_Store
+
+# compiled output
+bazel-out
+dist
+out-tsc
+tmp
+
+# dependencies
+node_modules
+.yarn
+
+# misc
+coverage
+package-lock.json
+typings
+*.lock
+*.log
+.pnp.*
+.sass-cache
+.yarnrc.yml
+
+# profiling files
+chrome-profiler-events*.json
+speed-measure-plugin*.json

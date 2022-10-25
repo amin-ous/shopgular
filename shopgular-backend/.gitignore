@@ -1,0 +1,25 @@
+# See http://help.github.com/ignore-files/ for more about ignoring files.
+
+# IDEs and editors
+.apt_generated
+.factorypath
+.idea
+.iml
+.ipr
+.iws
+.nb-gradle
+.springBeans
+.sts4-cache
+.vscode
+
+# compiled output
+build
+dist
+nbbuild
+nbdist
+nbproject/private
+
+# misc
+bin
+target
+*.log

@@ -1,0 +1,73 @@
+pipeline {
+    environment {
+        IMAGE = ""
+        WORKDIR = "shopgular-backend"
+        REGISTRY = "DOCKER_USERNAME/shopgular"
+        VERSION = "backend-0.1.0-$BUILD_NUMBER"
+    }
+    agent any
+    options { timestamps() }
+    tools { maven 'MAVEN_HOME' }
+    stages {
+        stage('Cloning repository') {
+            steps {
+                git branch: 'master', credentialsId: 'shopgular-git', url: 'https://github.com/amin-ous/shopgular.git'
+            }
+        }
+        stage('Initializing application') {
+            steps {
+                dir(WORKDIR) {
+                    sh 'mvn clean install -DskipTests'
+                }
+            }
+        }
+        stage('Testing application') {
+            steps {
+                dir(WORKDIR) {
+                    sh 'mvn test jacoco:report'
+                }
+            }
+        }
+        stage('Checking code quality') {
+            steps {
+                dir(WORKDIR) {
+                    sh 'mvn sonar:sonar -Dsonar.login=admin -Dsonar.password=shopgular'
+                }
+            }
+        }
+        stage('Deploying artifact') {
+            steps {
+                dir(WORKDIR) {
+                    sh 'mvn deploy -DskipTests'
+                }
+            }
+        }
+        stage('Building image') {
+            steps {
+                dir(WORKDIR) {
+                    script {
+                        IMAGE = docker.build REGISTRY + ":$VERSION"
+                    }
+                }
+            }
+        }
+        stage('Deploying image') {
+            steps {
+                dir(WORKDIR) {
+                    script {
+                        docker.withRegistry('', 'shopgular-docker') {
+                            IMAGE.push()
+                        }
+                    }
+                }
+            }
+        }
+        stage('Cleaning up') {
+            steps {
+                dir(WORKDIR) {
+                    sh "docker rmi $REGISTRY:$VERSION"
+                }
+            }
+        }
+    }
+}

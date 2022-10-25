@@ -1,0 +1,86 @@
+<div class="row">
+  <div class="col-md-11" style="margin-left: 20px">
+    <h3 style="margin-top: 20px">Regulations</h3>
+    <hr>
+    <button class="btn btn-round btn-sm btn-success" (click)="openModal(addModal, null)">Add new Regulation</button>
+    <br><br>
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Amount Paid</th>
+          <th>Amount Remaining</th>
+          <th>Creation Date</th>
+          <th>Paid</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor='let regulation of regulations'>
+          <td>{{regulation.id}}</td>
+          <td>{{regulation.amountPaid}}</td>
+          <td>{{regulation.amountRemaining}}</td>
+          <td>{{regulation.creationDate}}</td>
+          <td>{{regulation.paid}}</td>
+          <td>
+            <button type="button" class="btn btn-outline-primary" (click)="openModal(editModal, regulation)">Edit</button>
+            &nbsp;
+            <button type="button" class="btn btn-outline-danger"(click)="deleteRegulation(regulation.id)">Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<ng-template #addModal let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Add new Regulation</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  <div class="modal-body">
+    <form>
+      <div class="mb-3">
+        <label for="amountPaid">Amount Paid</label>
+        <div class="input-group">
+          <input id="amountPaid" class="form-control" type="text" [(ngModel)]="regulation.amountPaid" [ngModelOptions]="{standalone : true}">
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="amountRemaining">Amount Remaining</label>
+        <div class="input-group">
+          <input id="amountRemaining" class="form-control" type="text" [(ngModel)]="regulation.amountRemaining" [ngModelOptions]="{standalone : true}">
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-success" (click)="addRegulation(regulation)" (click)="modal.close('Save click')">Add</button>
+    <button type="button" class="btn btn-danger" (click)="modal.close('Save click')">Cancel</button>
+  </div>
+</ng-template>
+<ng-template #editModal let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Edit Regulation</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  <div class="modal-body">
+    <form>
+      <div class="mb-3">
+        <label for="amountPaid">Amount Paid</label>
+        <div class="input-group">
+          <input id="amountPaid" class="form-control" type="text" [(ngModel)]="regulation.amountPaid" [ngModelOptions]="{standalone : true}">
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="amountRemaining">Amount Remaining</label>
+        <div class="input-group">
+          <input id="amountRemaining" class="form-control" type="text" [(ngModel)]="regulation.amountRemaining" [ngModelOptions]="{standalone : true}">
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-success" (click)="updateRegulation(regulation)" (click)="modal.close('Save click')">Edit</button>
+    <button type="button" class="btn btn-danger" (click)="modal.close('Save click')">Cancel</button>
+  </div>
+</ng-template>
