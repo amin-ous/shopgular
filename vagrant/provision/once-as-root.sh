@@ -100,6 +100,8 @@ echo "Installing Jenkins plugins..."
     java -jar jenkins-cli.jar -s http://localhost:8080/ -auth admin:$(cat /var/lib/jenkins/secrets/initialAdminPassword) install-plugin sonargraph-integration
     java -jar jenkins-cli.jar -s http://localhost:8080/ -auth admin:$(cat /var/lib/jenkins/secrets/initialAdminPassword) install-plugin sonar
     java -jar jenkins-cli.jar -s http://localhost:8080/ -auth admin:$(cat /var/lib/jenkins/secrets/initialAdminPassword) install-plugin docker-workflow
+    java -jar jenkins-cli.jar -s http://localhost:8080/ -auth admin:$(cat /var/lib/jenkins/secrets/initialAdminPassword) install-plugin prometheus
+    java -jar jenkins-cli.jar -s http://localhost:8080/ -auth admin:$(cat /var/lib/jenkins/secrets/initialAdminPassword) install-plugin cloudbees-disk-usage-simple
     systemctl restart jenkins
 
 echo "Installing Docker Engine..."
@@ -109,8 +111,30 @@ echo "Installing Docker Engine..."
 echo "Starting Docker..."
     systemctl start docker && systemctl enable docker
 
+echo "Configuring Prometheus..."
+    if [[ ! -e /etc/prometheus/prometheus.yml ]]; then
+        mkdir -p /etc/prometheus
+        touch /etc/prometheus/prometheus.yml
+        echo "global:" >> /etc/prometheus/prometheus.yml
+        echo "  scrape_interval: 15s" >> /etc/prometheus/prometheus.yml
+        echo "  evaluation_interval: 15s" >> /etc/prometheus/prometheus.yml
+        echo "alerting:" >> /etc/prometheus/prometheus.yml
+        echo "  alertmanagers:" >> /etc/prometheus/prometheus.yml
+        echo "    - static_configs:" >> /etc/prometheus/prometheus.yml
+        echo "      - targets:" >> /etc/prometheus/prometheus.yml
+        echo "scrape_configs:" >> /etc/prometheus/prometheus.yml
+        echo "  - job_name: 'prometheus'" >> /etc/prometheus/prometheus.yml
+        echo "    static_configs:" >> /etc/prometheus/prometheus.yml
+        echo "      - targets: ['localhost:9090']" >> /etc/prometheus/prometheus.yml
+        echo "  - job_name: 'jenkins'" >> /etc/prometheus/prometheus.yml
+        echo "    metrics_path: /prometheus" >> /etc/prometheus/prometheus.yml
+        echo "    static_configs:" >> /etc/prometheus/prometheus.yml
+        echo "      - targets: ['192.168.56.1:8080']" >> /etc/prometheus/prometheus.yml
+    fi
+
 echo "Starting backend containers..."
     cd /app/shopgular-backend && docker compose build && docker compose up -d
+    docker restart portainer > /dev/null 2>&1
 
 echo "Installing Nginx..."
     yum -y install nginx

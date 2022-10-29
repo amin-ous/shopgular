@@ -44,11 +44,14 @@ Vagrant.configure(2) do |config|
 
   # network settings
   config.vm.network 'private_network', ip: options['ip']
+  config.vm.network "forwarded_port", guest: 3000, host: 3000 ### Grafana ###
   config.vm.network "forwarded_port", guest: 4200, host: 4200 ### Nginx ###
+  config.vm.network "forwarded_port", guest: 8000, host: 8000 ### Portainer ###
   config.vm.network "forwarded_port", guest: 8080, host: 8080 ### Jenkins ###
   config.vm.network "forwarded_port", guest: 8081, host: 8081 ### Nexus ###
   config.vm.network "forwarded_port", guest: 8089, host: 8089 ### Tomcat ###
   config.vm.network "forwarded_port", guest: 9000, host: 9000 ### SonarQube ###
+  config.vm.network "forwarded_port", guest: 9090, host: 9090 ### Prometheus ###
 
   # sync: folder 'shopgular' (host machine) -> folder '/app' (guest machine)
   config.vm.synced_folder './', '/app', owner: 'vagrant', group: 'vagrant'

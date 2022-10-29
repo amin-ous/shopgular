@@ -21,6 +21,31 @@ services:
     restart: unless-stopped
     ports:
       - $SONARQUBE_LOCAL_PORT:$SONARQUBE_DOCKER_PORT
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus
+    restart: unless-stopped
+    ports:
+      - $PROMETHEUS_LOCAL_PORT:$PROMETHEUS_DOCKER_PORT
+    volumes:
+      - /etc/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    restart: unless-stopped
+    ports:
+      - $GRAFANA_LOCAL_PORT:$GRAFANA_DOCKER_PORT
+  portainer:
+    image: portainer/portainer-ce
+    container_name: portainer
+    restart: unless-stopped
+    ports:
+      - $PORTAINER_LOCAL_PORT:$PORTAINER_DOCKER_PORT
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    security_opt:
+      - no-new-privileges:true
   shopgular-backend:
     image: shopgular-backend:0.1.0
     container_name: shopgular-backend
