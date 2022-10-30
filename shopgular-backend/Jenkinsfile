@@ -2,7 +2,7 @@ pipeline {
     environment {
         IMAGE = ""
         WORKDIR = "shopgular-backend"
-        REGISTRY = "DOCKER_USERNAME/shopgular"
+        REGISTRY = "aminous/shopgular"
         VERSION = "backend-0.1.0-$BUILD_NUMBER"
     }
     agent any
