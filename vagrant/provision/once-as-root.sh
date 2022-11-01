@@ -137,8 +137,9 @@ echo "Installing Ngrok..."
     cd /usr/local/bin && tar xf /usr/tmp/ngrok-v3-stable-linux-amd64.tgz
 
 echo "Starting backend containers..."
-    cd /app/shopgular-backend && docker compose build && docker compose up -d
-    docker restart portainer > /dev/null 2>&1
+    if [ ! "$(cd /app/shopgular-backend && docker compose ps -a)" ]; then
+        docker compose build && docker compose up -d && docker restart portainer > /dev/null 2>&1
+    fi
 
 echo "Installing Nginx..."
     yum -y install nginx
@@ -147,4 +148,6 @@ echo "Starting Nginx..."
     systemctl start nginx && systemctl enable nginx
 
 echo "Starting frontend containers..."
-    cd /app/shopgular-frontend && docker compose build && docker compose up -d
+    if [ ! "$(cd /app/shopgular-frontend && docker compose ps -a)" ]; then
+        docker compose build && docker compose up -d
+    fi
