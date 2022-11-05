@@ -59,10 +59,6 @@ echo "Configuring Jenkins..."
         echo "  </installations>" >> /var/lib/jenkins/hudson.tasks.Maven.xml
         echo "</hudson.tasks.Maven_-DescriptorImpl>" >> /var/lib/jenkins/hudson.tasks.Maven.xml
     fi
-    workdir=$(sed -n '/^  <workspaceDir>${JENKINS_HOME}\/workspace\/${ITEM_FULL_NAME}<\/workspaceDir>/=' "/var/lib/jenkins/config.xml")
-    if [ ! -z "${workdir}" ]; then
-        sed -i "${workdir}s/.*/  <workspaceDir>\/app<\/workspaceDir>/" "/var/lib/jenkins/config.xml"
-    fi
     jdk=$(sed -n '/^  <jdks\/>/=' "/var/lib/jenkins/config.xml")
     if [ ! -z "${jdk}" ]; then
         sed -i "${jdk}s/.*/  <jdks>/" "/var/lib/jenkins/config.xml"
@@ -133,8 +129,9 @@ echo "Configuring Prometheus..."
     fi
 
 echo "Starting backend containers..."
-    cd /app/shopgular-backend && docker compose build && docker compose up -d
-    docker restart portainer > /dev/null 2>&1
+    if [ ! "$(cd /app/shopgular-backend && docker compose ps -a)" ]; then
+        docker compose build && docker compose up -d && docker restart portainer > /dev/null 2>&1
+    fi
 
 echo "Installing Nginx..."
     yum -y install nginx
@@ -143,4 +140,6 @@ echo "Starting Nginx..."
     systemctl start nginx && systemctl enable nginx
 
 echo "Starting frontend containers..."
-    cd /app/shopgular-frontend && docker compose build && docker compose up -d
+    if [ ! "$(cd /app/shopgular-frontend && docker compose ps -a)" ]; then
+        docker compose build && docker compose up -d
+    fi
