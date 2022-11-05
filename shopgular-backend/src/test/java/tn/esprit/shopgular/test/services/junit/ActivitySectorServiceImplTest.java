@@ -1,4 +1,4 @@
-package tn.esprit.shopgular.test.services;
+package tn.esprit.shopgular.test.services.junit;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -29,7 +29,7 @@ class ActivitySectorServiceImplTest {
 
 	@BeforeAll
 	void start() throws IOException {
-		tempFile = new File("src/test/java/tn/esprit/shopgular/test/services/" + getClass().getSimpleName() + ".txt");
+		tempFile = new File("src/test/java/tn/esprit/shopgular/test/services/junit/" + getClass().getSimpleName() + ".txt");
 		tempFile.createNewFile();
 		bufferedWriter = new BufferedWriter(new FileWriter(tempFile));
 		initialSize = activitySectorServiceInt.getAllActivitySectors().size();

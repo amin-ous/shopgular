@@ -1,4 +1,4 @@
-package tn.esprit.shopgular.test.services;
+package tn.esprit.shopgular.test.services.junit;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -12,7 +12,6 @@ import org.springframework.boot.test.context.*;
 import org.springframework.test.context.junit4.*;
 import tn.esprit.shopgular.entities.*;
 import tn.esprit.shopgular.models.*;
-import tn.esprit.shopgular.repositories.SupplierDetailsRepository;
 import tn.esprit.shopgular.services.*;
 
 @SpringBootTest
@@ -22,19 +21,16 @@ import tn.esprit.shopgular.services.*;
 class SupplierServiceImplTest {
 
 	@Autowired
-	SupplierDetailsRepository supplierDetailsRepository;
-	@Autowired
 	SupplierServiceInt supplierServiceInt;
 
 	File tempFile;
 	Integer initialSize;
 	Long supplierId;
-	Long supplierDetailsId;
 	BufferedWriter bufferedWriter;
 
 	@BeforeAll
 	void start() throws IOException {
-		tempFile = new File("src/test/java/tn/esprit/shopgular/test/services/" + getClass().getSimpleName() + ".txt");
+		tempFile = new File("src/test/java/tn/esprit/shopgular/test/services/junit/" + getClass().getSimpleName() + ".txt");
 		tempFile.createNewFile();
 		bufferedWriter = new BufferedWriter(new FileWriter(tempFile));
 		initialSize = supplierServiceInt.getAllSuppliers().size();
@@ -50,8 +46,6 @@ class SupplierServiceImplTest {
 				initialSize = Integer.parseInt(line.substring(14));
 			} else if (line.contains("supplierId")) {
 				supplierId = Long.parseLong(line.substring(13));
-			} else if (line.contains("supplierDetailsId")) {
-				supplierDetailsId = Long.parseLong(line.substring(20));
 			}
 		}
 		bufferedReader.close();
@@ -64,7 +58,6 @@ class SupplierServiceImplTest {
 		SupplierModel supplierModel = new SupplierModel("TAS", "Test Add Supplier", SupplierCategory.ORDINARY, supplierDetailsModel);
 		Supplier supplier = supplierServiceInt.addSupplier(supplierModel);
 		bufferedWriter.write("supplierId = " + supplier.getId() + "\n");
-		bufferedWriter.write("supplierDetailsId = " + supplier.getDetails().getId() + "\n");
 		bufferedWriter.close();
 		assertNotNull(supplier.getId());
 		assertEquals(supplier.getCode(), supplierModel.getCode());
