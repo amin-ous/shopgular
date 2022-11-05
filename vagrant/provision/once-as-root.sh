@@ -128,6 +128,10 @@ echo "Configuring Prometheus..."
         echo "      - targets: ['192.168.56.1:8080']" >> /etc/prometheus/prometheus.yml
     fi
 
+echo "Installing Ngrok..."
+    cd /usr/tmp && wget -nc https://bin.equinox.io/c/bNyj1mQVY4c/ngrok-v3-stable-linux-amd64.tgz
+    cd /usr/local/bin && tar xf /usr/tmp/ngrok-v3-stable-linux-amd64.tgz
+
 echo "Starting backend containers..."
     if [ ! "$(cd /app/shopgular-backend && docker compose ps -a)" ]; then
         docker compose build && docker compose up -d && docker restart portainer > /dev/null 2>&1
