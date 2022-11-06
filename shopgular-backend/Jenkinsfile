@@ -3,8 +3,8 @@ pipeline {
         IMAGE = ""
         WORKDIR = "shopgular-backend"
         REGISTRY = "aminous/shopgular"
-        VERSION = "backend-0.1.0-$BUILD_NUMBER"
-        EMAIL = "mohamedamine.benfredj1@esprit.tn"
+        VERSION = "backend-1.0.0-$BUILD_NUMBER"
+        RECIPIENT = "mohamedamine.benfredj1@esprit.tn"
     }
     agent any
     options { timestamps() }
@@ -16,7 +16,7 @@ pipeline {
                     attachLog: true,
                     body: 'You received this email because we have detected a new build job from Jenkins. Please refer to the attachment below for more details. \n\nRegards, \nThe Shopgular Team',
                     subject: '[Jenkins Pipeline]',
-                    to: EMAIL
+                    to: RECIPIENT
                 )
             }
         }

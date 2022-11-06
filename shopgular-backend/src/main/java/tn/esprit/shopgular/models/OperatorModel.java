@@ -7,28 +7,14 @@ import lombok.*;
 @NoArgsConstructor
 public class OperatorModel {
 
-	private long id;
+	private Long id;
 
-	private String name;
+	private String surname;
 
 	private String prename;
 
 	private String oldPassword;
 
-	private String newPassword;
-
-	public OperatorModel(String name, String prename, String newPassword) {
-		this.name = name;
-		this.prename = prename;
-		this.newPassword = newPassword;
-	}
-
-	public OperatorModel(long id, String name, String prename, String oldPassword, String newPassword) {
-		this.id = id;
-		this.name = name;
-		this.prename = prename;
-		this.oldPassword = oldPassword;
-		this.newPassword = newPassword;
-	}
+	private String currentPassword;
 
 }

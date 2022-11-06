@@ -5,7 +5,6 @@ import javax.transaction.*;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.stereotype.*;
 import tn.esprit.shopgular.entities.*;
-import tn.esprit.shopgular.models.*;
 import tn.esprit.shopgular.repositories.*;
 
 @Service
@@ -22,11 +21,9 @@ public class SupplierServiceImpl implements SupplierServiceInt {
 	SupplierRepository supplierRepository;
 
 	@Override
-	public Supplier addSupplier(SupplierModel supplierModel) {
-		Supplier supplier = new Supplier(supplierModel.getCode(), supplierModel.getWording(), supplierModel.getCategory());
-		SupplierDetailsModel supplierDetailsModel = supplierModel.getDetails();
-		SupplierDetails supplierDetails = new SupplierDetails(supplierDetailsModel.getEmail(), supplierDetailsModel.getAddress(),
-		supplierDetailsModel.getSerialNumber(), new Date());
+	public Supplier addSupplier(Supplier supplier) {
+		SupplierDetails supplierDetails = supplier.getDetails();
+		supplierDetails.setCollaborationDate(new Date());
 		supplierDetailsRepository.save(supplierDetails);
 		supplier.setDetails(supplierDetails);
 		supplierRepository.save(supplier);
@@ -54,19 +51,19 @@ public class SupplierServiceImpl implements SupplierServiceInt {
 	}
 
 	@Override
-	public Supplier updateSupplier(SupplierModel supplierModel) {
-		Supplier supplier = getSupplier(supplierModel.getId());
-		supplier.setCode(Optional.ofNullable(supplierModel.getCode()).orElse(supplier.getCode()));
-		supplier.setWording(Optional.ofNullable(supplierModel.getWording()).orElse(supplier.getWording()));
-		supplier.setCategory(Optional.ofNullable(supplierModel.getCategory()).orElse(supplier.getCategory()));
-		SupplierDetailsModel supplierDetailsModel = supplierModel.getDetails();
+	public Supplier updateSupplier(Supplier supplier) {
+		Supplier targetedSupplier = getSupplier(supplier.getId());
+		targetedSupplier.setCode(Optional.ofNullable(supplier.getCode()).orElse(targetedSupplier.getCode()));
+		targetedSupplier.setWording(Optional.ofNullable(supplier.getWording()).orElse(targetedSupplier.getWording()));
+		targetedSupplier.setCategory(Optional.ofNullable(supplier.getCategory()).orElse(targetedSupplier.getCategory()));
 		SupplierDetails supplierDetails = supplier.getDetails();
-		supplierDetails.setEmail(supplierDetailsModel.getEmail());
-		supplierDetails.setAddress(supplierDetailsModel.getAddress());
-		supplierDetails.setSerialNumber(supplierDetailsModel.getSerialNumber());
-		supplierDetails.setCollaborationDate(supplierDetailsModel.getCollaborationDate());
-		supplierDetailsRepository.save(supplierDetails);
-		supplier.setDetails(supplierDetails);
+		SupplierDetails targetedSupplierDetails = targetedSupplier.getDetails();
+		targetedSupplierDetails.setEmail(Optional.ofNullable(supplierDetails.getEmail()).orElse(targetedSupplierDetails.getEmail()));
+		targetedSupplierDetails.setAddress(Optional.ofNullable(supplierDetails.getAddress()).orElse(targetedSupplierDetails.getAddress()));
+		targetedSupplierDetails.setSerialNumber(Optional.ofNullable(supplierDetails.getSerialNumber()).orElse(targetedSupplierDetails.getSerialNumber()));
+		targetedSupplierDetails.setCollaborationDate(Optional.ofNullable(supplierDetails.getCollaborationDate()).orElse(targetedSupplierDetails.getCollaborationDate()));
+		supplierDetailsRepository.save(targetedSupplierDetails);
+		targetedSupplier.setDetails(targetedSupplierDetails);
 		supplierRepository.save(supplier);
 		return supplier;
 	}

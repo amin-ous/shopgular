@@ -6,18 +6,14 @@ import lombok.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@RequiredArgsConstructor
 public class ProductModel {
 
-	private long id;
+	private Long id;
 
-	@NonNull
 	private String code;
 
-	@NonNull
 	private String wording;
 
-	@NonNull
 	private Double listPrice;
 
 }

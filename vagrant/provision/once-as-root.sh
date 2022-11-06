@@ -59,10 +59,6 @@ echo "Configuring Jenkins..."
         echo "  </installations>" >> /var/lib/jenkins/hudson.tasks.Maven.xml
         echo "</hudson.tasks.Maven_-DescriptorImpl>" >> /var/lib/jenkins/hudson.tasks.Maven.xml
     fi
-    workdir=$(sed -n '/^  <workspaceDir>${JENKINS_HOME}\/workspace\/${ITEM_FULL_NAME}<\/workspaceDir>/=' "/var/lib/jenkins/config.xml")
-    if [ ! -z "${workdir}" ]; then
-        sed -i "${workdir}s/.*/  <workspaceDir>\/app<\/workspaceDir>/" "/var/lib/jenkins/config.xml"
-    fi
     jdk=$(sed -n '/^  <jdks\/>/=' "/var/lib/jenkins/config.xml")
     if [ ! -z "${jdk}" ]; then
         sed -i "${jdk}s/.*/  <jdks>/" "/var/lib/jenkins/config.xml"
@@ -111,6 +107,16 @@ echo "Installing Docker Engine..."
 echo "Starting Docker..."
     systemctl start docker && systemctl enable docker
 
+echo "Configuring Docker for Grafana"
+    if [[ ! -e /etc/docker/daemon.json ]]; then
+        touch /etc/docker/daemon.json
+        echo "{" >> /etc/docker/daemon.json
+        echo "  \"metrics-addr\" : \"0.0.0.0:9090\"," >> /etc/docker/daemon.json
+        echo "  \"experimental\" : true" >> /etc/docker/daemon.json
+        echo "}" >> /etc/docker/daemon.json
+    fi
+    sudo systemctl restart docker
+
 echo "Configuring Prometheus..."
     if [[ ! -e /etc/prometheus/prometheus.yml ]]; then
         mkdir -p /etc/prometheus
@@ -130,6 +136,9 @@ echo "Configuring Prometheus..."
         echo "    metrics_path: /prometheus" >> /etc/prometheus/prometheus.yml
         echo "    static_configs:" >> /etc/prometheus/prometheus.yml
         echo "      - targets: ['192.168.56.1:8080']" >> /etc/prometheus/prometheus.yml
+        echo "  - job_name: 'docker'" >> /etc/prometheus/prometheus.yml
+        echo "    static_configs:" >> /etc/prometheus/prometheus.yml
+        echo "      - targets: ['192.168.56.1:9323']" >> /etc/prometheus/prometheus.yml
     fi
 
 echo "Installing Ngrok..."

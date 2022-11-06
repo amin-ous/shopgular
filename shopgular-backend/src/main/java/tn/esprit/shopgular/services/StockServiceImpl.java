@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.*;
 import org.springframework.scheduling.annotation.*;
 import org.springframework.stereotype.*;
 import tn.esprit.shopgular.entities.*;
-import tn.esprit.shopgular.models.*;
 import tn.esprit.shopgular.repositories.*;
 
 @Service
@@ -18,8 +17,7 @@ public class StockServiceImpl implements StockServiceInt {
 	StockRepository stockRepository;
 
 	@Override
-	public Stock addStock(StockModel stockModel) {
-		Stock stock = new Stock(stockModel.getWording(), stockModel.getCurrentQuantity(), stockModel.getMinimumQuantity());
+	public Stock addStock(Stock stock) {
 		return stockRepository.save(stock);
 	}
 
@@ -54,13 +52,13 @@ public class StockServiceImpl implements StockServiceInt {
 	}
 
 	@Override
-	public Stock updateStock(StockModel stockModel) {
-		Stock stock = getStock(stockModel.getId());
-		stock.setWording(Optional.ofNullable(stockModel.getWording()).orElse(stock.getWording()));
-		stock.setCurrentQuantity(Optional.ofNullable(stockModel.getCurrentQuantity()).orElse(stock.getCurrentQuantity()));
-		stock.setMinimumQuantity(Optional.ofNullable(stockModel.getMinimumQuantity()).orElse(stock.getMinimumQuantity()));
-		stockRepository.save(stock);
-		return stock;
+	public Stock updateStock(Stock stock) {
+		Stock targetedStock = getStock(stock.getId());
+		targetedStock.setWording(Optional.ofNullable(stock.getWording()).orElse(targetedStock.getWording()));
+		targetedStock.setCurrentQuantity(Optional.ofNullable(stock.getCurrentQuantity()).orElse(targetedStock.getCurrentQuantity()));
+		targetedStock.setMinimumQuantity(Optional.ofNullable(stock.getMinimumQuantity()).orElse(targetedStock.getMinimumQuantity()));
+		stockRepository.save(targetedStock);
+		return targetedStock;
 	}
 
 	@Override

@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.*;
 import org.springframework.security.crypto.password.*;
 import org.springframework.stereotype.*;
 import tn.esprit.shopgular.entities.*;
-import tn.esprit.shopgular.models.*;
 import tn.esprit.shopgular.repositories.*;
 
 @Service
@@ -20,9 +19,8 @@ public class OperatorServiceImpl implements OperatorServiceInt {
 	PasswordEncoder passwordEncoder;
 
 	@Override
-	public Operator addOperator(OperatorModel operatorModel) {
-		operatorModel.setNewPassword(passwordEncoder.encode(operatorModel.getNewPassword()));
-		Operator operator = new Operator(operatorModel.getName(), operatorModel.getPrename(), operatorModel.getNewPassword());
+	public Operator addOperator(Operator operator) {
+		operator.setCurrentPassword(passwordEncoder.encode(operator.getCurrentPassword()));
 		operatorRepository.save(operator);
 		return operator;
 	}
@@ -38,15 +36,18 @@ public class OperatorServiceImpl implements OperatorServiceInt {
 	}
 
 	@Override
-	public Operator updateOperator(OperatorModel operatorModel) {
-		Operator operator = getOperator(operatorModel.getId());
-		if (passwordEncoder.matches(operatorModel.getOldPassword(), operator.getPassword())) {
-			operator.setName(Optional.ofNullable(operatorModel.getName()).orElse(operator.getName()));
-			operator.setPrename(Optional.ofNullable(operatorModel.getPrename()).orElse(operator.getPrename()));
-			operator.setPassword(Optional.ofNullable(passwordEncoder.encode(operatorModel.getNewPassword())).orElse(operator.getPassword()));
-			operatorRepository.save(operator);
+	public Operator updateOperator(Operator operator) {
+		Operator targetedOperator = getOperator(operator.getId());
+		if (passwordEncoder.matches(operator.getOldPassword(), targetedOperator.getCurrentPassword())) {
+			targetedOperator.setSurname(Optional.ofNullable(operator.getSurname()).orElse(targetedOperator.getSurname()));
+			targetedOperator.setPrename(Optional.ofNullable(operator.getPrename()).orElse(targetedOperator.getPrename()));
+			if (operator.getCurrentPassword() != null) {
+				targetedOperator.setOldPassword(targetedOperator.getCurrentPassword());
+				targetedOperator.setCurrentPassword(passwordEncoder.encode(operator.getCurrentPassword()));
+			}
+			operatorRepository.save(targetedOperator);
 		}
-		return operator;
+		return targetedOperator;
 	}
 
 	@Override

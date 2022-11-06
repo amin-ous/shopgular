@@ -5,7 +5,6 @@ import javax.transaction.*;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.stereotype.*;
 import tn.esprit.shopgular.entities.*;
-import tn.esprit.shopgular.models.*;
 import tn.esprit.shopgular.repositories.*;
 
 @Service
@@ -22,8 +21,9 @@ public class ProductServiceImpl implements ProductServiceInt {
 	StockRepository stockRepository;
 
 	@Override
-	public Product addProduct(ProductModel productModel) {
-		Product product = new Product(productModel.getCode(), productModel.getWording(), productModel.getListPrice(), new Date(), new Date());
+	public Product addProduct(Product product) {
+		product.setCreationDate(new Date());
+		product.setLastModificationDate(new Date());
 		productRepository.save(product);
 		return product;
 	}
@@ -44,14 +44,14 @@ public class ProductServiceImpl implements ProductServiceInt {
 	}
 
 	@Override
-	public Product updateProduct(ProductModel productModel) {
-		Product product = getProduct(productModel.getId());
-		product.setCode(Optional.ofNullable(productModel.getCode()).orElse(product.getCode()));
-		product.setWording(Optional.ofNullable(productModel.getWording()).orElse(product.getWording()));
-		product.setListPrice(Optional.ofNullable(productModel.getListPrice()).orElse(product.getListPrice()));
-		product.setLastModificationDate(new Date());
-		productRepository.save(product);
-		return product;
+	public Product updateProduct(Product product) {
+		Product targetedProduct = getProduct(product.getId());
+		targetedProduct.setCode(Optional.ofNullable(product.getCode()).orElse(targetedProduct.getCode()));
+		targetedProduct.setWording(Optional.ofNullable(product.getWording()).orElse(targetedProduct.getWording()));
+		targetedProduct.setListPrice(Optional.ofNullable(product.getListPrice()).orElse(targetedProduct.getListPrice()));
+		targetedProduct.setLastModificationDate(new Date());
+		productRepository.save(targetedProduct);
+		return targetedProduct;
 	}
 
 	@Override

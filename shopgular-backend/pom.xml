@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>tn.esprit.shopgular</groupId>
 	<artifactId>shopgular</artifactId>
-	<version>0.1.0-SNAPSHOT</version>
+	<version>1.0.0</version>
 	<name>shopgular</name>
 	<properties>
 		<java.version>1.8</java.version>
@@ -71,11 +71,23 @@
 		<repository>
 			<id>deploymentRepo</id>
 			<name>Nexus Repository</name>
-			<url>http://localhost:8081/repository/maven-snapshots</url>
+			<url>http://localhost:8081/repository/maven-releases</url>
 		</repository>
 	</distributionManagement>
 	<build>
 		<plugins>
+			<plugin>
+				<artifactId>maven-resources-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<includes>
+						<include>**/*Test.java</include>
+					</includes>
+				</configuration>
+			</plugin>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>

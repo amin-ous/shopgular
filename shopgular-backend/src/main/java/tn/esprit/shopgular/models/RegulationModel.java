@@ -6,15 +6,12 @@ import lombok.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@RequiredArgsConstructor
 public class RegulationModel {
 
-	private long id;
+	private Long id;
 
-	@NonNull
 	private Double amountPaid;
 
-	@NonNull
 	private Double amountRemaining;
 
 }

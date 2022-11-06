@@ -1,8 +1,7 @@
-package tn.esprit.shopgular.test.services;
-
-import static org.junit.jupiter.api.Assertions.*;
+package tn.esprit.shopgular.test.services.junit;
 
 import java.io.*;
+import lombok.extern.slf4j.*;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.MethodOrderer.*;
 import org.junit.runner.*;
@@ -11,9 +10,9 @@ import org.springframework.boot.test.context.*;
 import org.springframework.security.crypto.password.*;
 import org.springframework.test.context.junit4.*;
 import tn.esprit.shopgular.entities.*;
-import tn.esprit.shopgular.models.*;
 import tn.esprit.shopgular.services.*;
 
+@Slf4j
 @SpringBootTest
 @RunWith(SpringRunner.class)
 @TestMethodOrder(OrderAnnotation.class)
@@ -32,7 +31,7 @@ class OperatorServiceImplTest {
 
 	@BeforeAll
 	void start() throws IOException {
-		tempFile = new File("src/test/java/tn/esprit/shopgular/test/services/" + getClass().getSimpleName() + ".txt");
+		tempFile = new File("src/test/java/tn/esprit/shopgular/test/services/junit/" + getClass().getSimpleName() + ".txt");
 		tempFile.createNewFile();
 		bufferedWriter = new BufferedWriter(new FileWriter(tempFile));
 		initialSize = operatorServiceInt.getAllOperators().size();
@@ -56,41 +55,42 @@ class OperatorServiceImplTest {
 	@Test
 	@Order(1)
 	void testAddOperator() throws IOException {
-		OperatorModel operatorModel = new OperatorModel("Test Add", "Operator TAO", "Test Add Operator");
-		operatorModel.setNewPassword(passwordEncoder.encode(operatorModel.getNewPassword()));
-		Operator operator = operatorServiceInt.addOperator(operatorModel);
-		bufferedWriter.write("operatorId = " + operator.getId() + "\n");
+		Operator operator = new Operator("Test Add", "Operator TAO", "Test Add Operator");
+		String rawPassword = operator.getCurrentPassword();
+		Operator addedOperator = operatorServiceInt.addOperator(operator);
+		bufferedWriter.write("operatorId = " + addedOperator.getId() + "\n");
 		bufferedWriter.close();
-		assertNotNull(operator.getId());
-		assertEquals(operator.getName(), operatorModel.getName());
-		assertEquals(operator.getPrename(), operatorModel.getPrename());
-		passwordEncoder.matches(passwordEncoder.encode(operatorModel.getNewPassword()), operator.getPassword());
+		Assertions.assertNotNull(addedOperator.getId());
+		Assertions.assertEquals(operator.getSurname(), addedOperator.getSurname());
+		Assertions.assertEquals(operator.getPrename(), addedOperator.getPrename());
+		Assertions.assertTrue(passwordEncoder.matches(rawPassword, addedOperator.getCurrentPassword()));
+		log.info("Operator has been successfully added");
 	}
 
 	@Test
 	@Order(2)
 	void testGetAllOperators() {
-		assertEquals(initialSize + 1, operatorServiceInt.getAllOperators().size());
+		Assertions.assertEquals(initialSize + 1, operatorServiceInt.getAllOperators().size());
+		log.info("Operators have been successfully retrieved");
 	}
 
 	@Test
 	@Order(3)
 	void testUpdateOperator() {
-		OperatorModel operatorModel = new OperatorModel(operatorId, "Test Update", "Operator TUO", "Test Add Operator", "Test Update Operator");
-		Operator operator = operatorServiceInt.getOperator(operatorId);
-		if (passwordEncoder.matches(passwordEncoder.encode(operatorModel.getNewPassword()), operator.getPassword())) {
-			operator = operatorServiceInt.updateOperator(operatorModel);
-			assertEquals(operator.getId(), operatorId);
-			assertEquals(operator.getName(), operatorModel.getName());
-			assertEquals(operator.getPrename(), operatorModel.getPrename());
-		}
+		Operator operator = new Operator(operatorId, "Test Update", "Operator TUO", "Test Add Operator", "Test Update Operator");
+		Operator updatedOperator = operatorServiceInt.updateOperator(operator);
+		Assertions.assertEquals(operatorId, updatedOperator.getId());
+		Assertions.assertEquals(operator.getSurname(), updatedOperator.getSurname());
+		Assertions.assertEquals(operator.getPrename(), updatedOperator.getPrename());
+		log.info("Operator has been successfully updated");
 	}
 
 	@Test
 	@Order(4)
 	void testDeleteOperator() {
 		operatorServiceInt.deleteOperator(operatorId);
-		assertNull(operatorServiceInt.getOperator(operatorId));
+		Assertions.assertNull(operatorServiceInt.getOperator(operatorId));
+		log.info("Operator has been successfully deleted");
 	}
 
 	@AfterAll

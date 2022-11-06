@@ -11,7 +11,6 @@ import lombok.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@RequiredArgsConstructor
 public class Regulation implements Serializable {
 
 	static final long serialVersionUID = 1L;
@@ -20,21 +19,28 @@ public class Regulation implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@NonNull
 	private Double amountPaid;
 
-	@NonNull
 	private Double amountRemaining;
 
-	@NonNull
 	@Temporal(TemporalType.DATE)
 	private Date creationDate;
 
-	@NonNull
 	private Boolean paid;
 
 	@JsonIgnore
 	@ManyToOne
 	private Invoice invoice;
+
+	public Regulation(Double amountPaid, Double amountRemaining) {
+		this.amountPaid = amountPaid;
+		this.amountRemaining = amountRemaining;
+	}
+
+	public Regulation(Long id, Double amountPaid, Double amountRemaining) {
+		this.id = id;
+		this.amountPaid = amountPaid;
+		this.amountRemaining = amountRemaining;
+	}
 
 }

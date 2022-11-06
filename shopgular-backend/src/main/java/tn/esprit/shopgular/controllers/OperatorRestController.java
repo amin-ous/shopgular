@@ -20,7 +20,8 @@ public class OperatorRestController {
 	@ResponseBody
 	@PostMapping("/add-operator")
 	public Operator addOperator(@RequestBody OperatorModel operatorModel) {
-		return operatorServiceInt.addOperator(operatorModel);
+		Operator operator = new Operator(operatorModel.getSurname(), operatorModel.getPrename(), operatorModel.getCurrentPassword());
+		return operatorServiceInt.addOperator(operator);
 	}
 
 	@ResponseBody
@@ -38,7 +39,8 @@ public class OperatorRestController {
 	@ResponseBody
 	@PutMapping("/update-operator")
 	public Operator updateOperator(@RequestBody OperatorModel operatorModel) {
-		return operatorServiceInt.updateOperator(operatorModel);
+		Operator operator = new Operator(operatorModel.getId(), operatorModel.getSurname(), operatorModel.getPrename(), operatorModel.getOldPassword(), operatorModel.getCurrentPassword());
+		return operatorServiceInt.updateOperator(operator);
 	}
 
 	@ResponseBody

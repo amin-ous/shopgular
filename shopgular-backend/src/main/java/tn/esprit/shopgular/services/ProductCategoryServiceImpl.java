@@ -5,7 +5,6 @@ import javax.transaction.*;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.stereotype.*;
 import tn.esprit.shopgular.entities.*;
-import tn.esprit.shopgular.models.*;
 import tn.esprit.shopgular.repositories.*;
 
 @Service
@@ -16,8 +15,7 @@ public class ProductCategoryServiceImpl implements ProductCategoryServiceInt {
 	ProductCategoryRepository productCategoryRepository;
 
 	@Override
-	public ProductCategory addProductCategory(ProductCategoryModel productCategoryModel) {
-		ProductCategory productCategory = new ProductCategory(productCategoryModel.getCode(), productCategoryModel.getWording());
+	public ProductCategory addProductCategory(ProductCategory productCategory) {
 		productCategoryRepository.save(productCategory);
 		return productCategory;
 	}
@@ -33,11 +31,11 @@ public class ProductCategoryServiceImpl implements ProductCategoryServiceInt {
 	}
 
 	@Override
-	public ProductCategory updateProductCategory(ProductCategoryModel productCategoryModel) {
-		ProductCategory productCategory = getProductCategory(productCategoryModel.getId());
-		productCategory.setCode(Optional.ofNullable(productCategoryModel.getCode()).orElse(productCategory.getCode()));
-		productCategory.setWording(Optional.ofNullable(productCategoryModel.getWording()).orElse(productCategory.getWording()));
-		return productCategory;
+	public ProductCategory updateProductCategory(ProductCategory productCategory) {
+		ProductCategory targetedProductCategory = getProductCategory(productCategory.getId());
+		targetedProductCategory.setCode(Optional.ofNullable(productCategory.getCode()).orElse(targetedProductCategory.getCode()));
+		targetedProductCategory.setWording(Optional.ofNullable(productCategory.getWording()).orElse(targetedProductCategory.getWording()));
+		return targetedProductCategory;
 	}
 
 	@Override

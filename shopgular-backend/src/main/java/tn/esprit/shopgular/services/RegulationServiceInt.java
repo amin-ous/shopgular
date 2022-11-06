@@ -2,11 +2,10 @@ package tn.esprit.shopgular.services;
 
 import java.util.*;
 import tn.esprit.shopgular.entities.*;
-import tn.esprit.shopgular.models.*;
 
 public interface RegulationServiceInt {
 
-	Regulation addRegulation(RegulationModel regulationModel);
+	Regulation addRegulation(Regulation regulation);
 
 	List<Regulation> getAllRegulations();
 
@@ -16,7 +15,7 @@ public interface RegulationServiceInt {
 
 	double getPeriodicIncomes(Date startDate, Date endDate);
 
-	Regulation updateRegulation(RegulationModel regulationModel);
+	Regulation updateRegulation(Regulation regulation);
 
 	void deleteRegulation(Long regulationId);
 

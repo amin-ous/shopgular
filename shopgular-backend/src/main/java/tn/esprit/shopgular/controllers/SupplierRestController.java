@@ -20,7 +20,9 @@ public class SupplierRestController {
 	@ResponseBody
 	@PostMapping("/add-supplier")
 	public Supplier addSupplier(@RequestBody SupplierModel supplierModel) {
-		return supplierServiceInt.addSupplier(supplierModel);
+		SupplierDetails supplierDetails = new SupplierDetails(supplierModel.getDetails().getEmail(), supplierModel.getDetails().getAddress(), supplierModel.getDetails().getSerialNumber());
+		Supplier supplier = new Supplier(supplierModel.getCode(), supplierModel.getWording(), supplierModel.getCategory(), supplierDetails);
+		return supplierServiceInt.addSupplier(supplier);
 	}
 
 	@ResponseBody
@@ -44,7 +46,9 @@ public class SupplierRestController {
 	@ResponseBody
 	@PutMapping("/update-supplier")
 	public Supplier updateSupplier(@RequestBody SupplierModel supplierModel) {
-		return supplierServiceInt.updateSupplier(supplierModel);
+		SupplierDetails supplierDetails = new SupplierDetails(supplierModel.getDetails().getId(), supplierModel.getDetails().getEmail(), supplierModel.getDetails().getAddress(), supplierModel.getDetails().getSerialNumber());
+		Supplier supplier = new Supplier(supplierModel.getId(), supplierModel.getCode(), supplierModel.getWording(), supplierModel.getCategory(), supplierDetails);
+		return supplierServiceInt.updateSupplier(supplier);
 	}
 
 	@ResponseBody
