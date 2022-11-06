@@ -2,11 +2,10 @@ package tn.esprit.shopgular.services;
 
 import java.util.*;
 import tn.esprit.shopgular.entities.*;
-import tn.esprit.shopgular.models.*;
 
 public interface SupplierServiceInt {
 
-	Supplier addSupplier(SupplierModel supplierModel);
+	Supplier addSupplier(Supplier supplier);
 
 	List<Supplier> getAllSuppliers();
 
@@ -14,7 +13,7 @@ public interface SupplierServiceInt {
 
 	List<Invoice> getSupplierInvoices(Long supplierId);
 
-	Supplier updateSupplier(SupplierModel supplierModel);
+	Supplier updateSupplier(Supplier supplier);
 
 	void assignActivitySectorToSupplier(Long activitySectorId, Long supplierId);
 

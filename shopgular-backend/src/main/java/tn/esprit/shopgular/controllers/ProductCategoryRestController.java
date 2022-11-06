@@ -20,7 +20,8 @@ public class ProductCategoryRestController {
 	@ResponseBody
 	@PostMapping("/add-product-category")
 	public ProductCategory addProductCategory(@RequestBody ProductCategoryModel productCategoryModel) {
-		return productCategoryServiceInt.addProductCategory(productCategoryModel);
+		ProductCategory productCategory = new ProductCategory(productCategoryModel.getCode(), productCategoryModel.getWording());
+		return productCategoryServiceInt.addProductCategory(productCategory);
 	}
 
 	@ResponseBody
@@ -38,7 +39,8 @@ public class ProductCategoryRestController {
 	@PutMapping("/update-product-category")
 	@ResponseBody
 	public ProductCategory updateProductCategory(@RequestBody ProductCategoryModel productCategoryModel) {
-		return productCategoryServiceInt.updateProductCategory(productCategoryModel);
+		ProductCategory productCategory = new ProductCategory(productCategoryModel.getId(), productCategoryModel.getCode(), productCategoryModel.getWording());
+		return productCategoryServiceInt.updateProductCategory(productCategory);
 	}
 
 	@DeleteMapping("/delete-product-category/{product-category-id}")

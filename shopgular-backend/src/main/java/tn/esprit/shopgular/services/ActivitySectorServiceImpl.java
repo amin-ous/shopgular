@@ -5,7 +5,6 @@ import javax.transaction.*;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.stereotype.*;
 import tn.esprit.shopgular.entities.*;
-import tn.esprit.shopgular.models.*;
 import tn.esprit.shopgular.repositories.*;
 
 @Service
@@ -16,8 +15,7 @@ public class ActivitySectorServiceImpl implements ActivitySectorServiceInt {
 	ActivitySectorRepository activitySectorRepository;
 
 	@Override
-	public ActivitySector addActivitySector(ActivitySectorModel activitySectorModel) {
-		ActivitySector activitySector = new ActivitySector(activitySectorModel.getCode(), activitySectorModel.getWording());
+	public ActivitySector addActivitySector(ActivitySector activitySector) {
 		activitySectorRepository.save(activitySector);
 		return activitySector;
 	}
@@ -33,12 +31,12 @@ public class ActivitySectorServiceImpl implements ActivitySectorServiceInt {
 	}
 
 	@Override
-	public ActivitySector updateActivitySector(ActivitySectorModel activitySectorModel) {
-		ActivitySector activitySector = getActivitySector(activitySectorModel.getId());
-		activitySector.setCode(Optional.ofNullable(activitySectorModel.getCode()).orElse(activitySector.getCode()));
-		activitySector.setWording(Optional.ofNullable(activitySectorModel.getWording()).orElse(activitySector.getWording()));
-		activitySectorRepository.save(activitySector);
-		return activitySector;
+	public ActivitySector updateActivitySector(ActivitySector activitySector) {
+		ActivitySector targetedActivitySector = getActivitySector(activitySector.getId());
+		targetedActivitySector.setCode(Optional.ofNullable(activitySector.getCode()).orElse(targetedActivitySector.getCode()));
+		targetedActivitySector.setWording(Optional.ofNullable(activitySector.getWording()).orElse(targetedActivitySector.getWording()));
+		activitySectorRepository.save(targetedActivitySector);
+		return targetedActivitySector;
 	}
 
 	@Override

@@ -1,6 +1,4 @@
-package tn.esprit.shopgular.test.services;
-
-import static org.junit.jupiter.api.Assertions.*;
+package tn.esprit.shopgular.test.services.junit;
 
 import java.io.*;
 import org.junit.jupiter.api.*;
@@ -10,7 +8,6 @@ import org.springframework.beans.factory.annotation.*;
 import org.springframework.boot.test.context.*;
 import org.springframework.test.context.junit4.*;
 import tn.esprit.shopgular.entities.*;
-import tn.esprit.shopgular.models.*;
 import tn.esprit.shopgular.services.*;
 
 @SpringBootTest
@@ -29,7 +26,7 @@ class StockServiceImplTest {
 
 	@BeforeAll
 	void start() throws IOException {
-		tempFile = new File("src/test/java/tn/esprit/shopgular/test/services/" + getClass().getSimpleName() + ".txt");
+		tempFile = new File("src/test/java/tn/esprit/shopgular/test/services/junit/" + getClass().getSimpleName() + ".txt");
 		tempFile.createNewFile();
 		bufferedWriter = new BufferedWriter(new FileWriter(tempFile));
 		initialSize = stockServiceInt.getAllStocks().size();
@@ -53,36 +50,36 @@ class StockServiceImplTest {
 	@Test
 	@Order(1)
 	void testAddStock() throws IOException {
-		StockModel stockModel = new StockModel("Test Add Stock", 50, 10);
-		Stock stock = stockServiceInt.addStock(stockModel);
-		bufferedWriter.write("stockId = " + stock.getId() + "\n");
+		Stock stock = new Stock("Test Add Stock", 50, 10);
+		Stock addedStock = stockServiceInt.addStock(stock);
+		bufferedWriter.write("stockId = " + addedStock.getId() + "\n");
 		bufferedWriter.close();
-		assertNotNull(stock.getId());
-		assertTrue(stock.getCurrentQuantity() > stock.getMinimumQuantity());
-		assertTrue(stock.getMinimumQuantity() > 0);
+		Assertions.assertNotNull(addedStock.getId());
+		Assertions.assertEquals(stock.getCurrentQuantity(), addedStock.getCurrentQuantity());
+		Assertions.assertEquals(stock.getMinimumQuantity(), addedStock.getMinimumQuantity());
 	}
 
 	@Test
 	@Order(2)
 	void testGetAllStocks() {
-		assertEquals(initialSize + 1, stockServiceInt.getAllStocks().size());
+		Assertions.assertEquals(initialSize + 1, stockServiceInt.getAllStocks().size());
 	}
 
 	@Test
 	@Order(3)
 	void testUpdateStock() {
-		StockModel stockModel = new StockModel(stockId, "Test Update Stock", 100, 20);
-		Stock stock = stockServiceInt.updateStock(stockModel);
-		assertEquals(stock.getId(), stockId);
-		assertTrue(stock.getCurrentQuantity() > 0);
-		assertTrue(stock.getMinimumQuantity() > 0);
+		Stock stock = new Stock(stockId, "Test Update Stock", 100, 20);
+		Stock updatedStock = stockServiceInt.updateStock(stock);
+		Assertions.assertEquals(stockId, updatedStock.getId());
+		Assertions.assertEquals(stock.getCurrentQuantity(), updatedStock.getCurrentQuantity());
+		Assertions.assertEquals(stock.getMinimumQuantity(), updatedStock.getMinimumQuantity());
 	}
 
 	@Test
 	@Order(4)
 	void testDeleteStock() {
 		stockServiceInt.deleteStock(stockId);
-		assertNull(stockServiceInt.getStock(stockId));
+		Assertions.assertNull(stockServiceInt.getStock(stockId));
 	}
 
 	@AfterAll

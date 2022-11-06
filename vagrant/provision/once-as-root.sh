@@ -59,10 +59,6 @@ echo "Configuring Jenkins..."
         echo "  </installations>" >> /var/lib/jenkins/hudson.tasks.Maven.xml
         echo "</hudson.tasks.Maven_-DescriptorImpl>" >> /var/lib/jenkins/hudson.tasks.Maven.xml
     fi
-    workdir=$(sed -n '/^  <workspaceDir>${JENKINS_HOME}\/workspace\/${ITEM_FULL_NAME}<\/workspaceDir>/=' "/var/lib/jenkins/config.xml")
-    if [ ! -z "${workdir}" ]; then
-        sed -i "${workdir}s/.*/  <workspaceDir>\/app<\/workspaceDir>/" "/var/lib/jenkins/config.xml"
-    fi
     jdk=$(sed -n '/^  <jdks\/>/=' "/var/lib/jenkins/config.xml")
     if [ ! -z "${jdk}" ]; then
         sed -i "${jdk}s/.*/  <jdks>/" "/var/lib/jenkins/config.xml"

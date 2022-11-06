@@ -20,7 +20,8 @@ public class StockRestController {
 	@ResponseBody
 	@PostMapping("/add-stock")
 	public Stock addStock(@RequestBody StockModel stockModel) {
-		return stockServiceInt.addStock(stockModel);
+		Stock stock = new Stock(stockModel.getWording(), stockModel.getCurrentQuantity(), stockModel.getMinimumQuantity());
+		return stockServiceInt.addStock(stock);
 	}
 
 	@ResponseBody
@@ -44,7 +45,8 @@ public class StockRestController {
 	@PutMapping("/update-stock")
 	@ResponseBody
 	public Stock updateStock(@RequestBody StockModel stockModel) {
-		return stockServiceInt.updateStock(stockModel);
+		Stock stock = new Stock(stockModel.getId(), stockModel.getWording(), stockModel.getCurrentQuantity(), stockModel.getMinimumQuantity());
+		return stockServiceInt.updateStock(stock);
 	}
 
 	@DeleteMapping("/delete-stock/{stock-id}")

@@ -1,9 +1,6 @@
-package tn.esprit.shopgular.test.services;
-
-import static org.junit.jupiter.api.Assertions.*;
+package tn.esprit.shopgular.test.services.junit;
 
 import java.io.*;
-import java.util.*;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.MethodOrderer.*;
 import org.junit.runner.*;
@@ -11,7 +8,6 @@ import org.springframework.beans.factory.annotation.*;
 import org.springframework.boot.test.context.*;
 import org.springframework.test.context.junit4.*;
 import tn.esprit.shopgular.entities.*;
-import tn.esprit.shopgular.models.*;
 import tn.esprit.shopgular.services.*;
 
 @SpringBootTest
@@ -30,7 +26,7 @@ class RegulationServiceImplTest {
 
 	@BeforeAll
 	void start() throws IOException {
-		tempFile = new File("src/test/java/tn/esprit/shopgular/test/services/" + getClass().getSimpleName() + ".txt");
+		tempFile = new File("src/test/java/tn/esprit/shopgular/test/services/junit/" + getClass().getSimpleName() + ".txt");
 		tempFile.createNewFile();
 		bufferedWriter = new BufferedWriter(new FileWriter(tempFile));
 		initialSize = regulationServiceInt.getAllRegulations().size();
@@ -54,41 +50,38 @@ class RegulationServiceImplTest {
 	@Test
 	@Order(1)
 	void testAddRegulation() throws IOException {
-		RegulationModel regulationModel = new RegulationModel(50.000, 50.000);
-		Regulation regulation = regulationServiceInt.addRegulation(regulationModel);
-		bufferedWriter.write("regulationId = " + regulation.getId() + "\n");
+		Regulation regulation = new Regulation(50.000, 50.000);
+		Regulation addedRegulation = regulationServiceInt.addRegulation(regulation);
+		bufferedWriter.write("regulationId = " + addedRegulation.getId() + "\n");
 		bufferedWriter.close();
-		assertNotNull(regulation.getId());
-		assertTrue(regulation.getAmountPaid() > 0);
-		assertNotNull(regulation.getAmountRemaining());
-		assertTrue(new Date().getTime() - regulation.getCreationDate().getTime() <= 600);
-		if (regulation.getAmountRemaining() != 0) {
-			assertFalse(regulation.getPaid());
+		Assertions.assertNotNull(addedRegulation.getId());
+		Assertions.assertEquals(regulation.getAmountPaid(), addedRegulation.getAmountPaid());
+		Assertions.assertEquals(regulation.getAmountRemaining(), addedRegulation.getAmountRemaining());
+		if (addedRegulation.getAmountRemaining() != 0) {
+			Assertions.assertFalse(addedRegulation.getPaid());
 		} else {
-			assertTrue(regulation.getPaid());
+			Assertions.assertTrue(addedRegulation.getPaid());
 		}
 	}
 
 	@Test
 	@Order(2)
 	void testGetAllRegulations() {
-		assertEquals(initialSize + 1, regulationServiceInt.getAllRegulations().size());
+		Assertions.assertEquals(initialSize + 1, regulationServiceInt.getAllRegulations().size());
 	}
 
 	@Test
 	@Order(3)
 	void testUpdateRegulation() {
-		RegulationModel regulationModel = new RegulationModel(regulationId, 100.000, 0.000);
-		Regulation regulation = regulationServiceInt.updateRegulation(regulationModel);
-		assertEquals(regulation.getId(), regulationId);
-		assertEquals(regulation.getAmountPaid() + regulation.getAmountRemaining(),
-		regulationServiceInt.getRegulation(regulationId).getAmountPaid() +
-		regulationServiceInt.getRegulation(regulationId).getAmountRemaining());
-		assertEquals(regulation.getCreationDate(), regulation.getCreationDate());
-		if (regulation.getAmountRemaining() != 0) {
-			assertFalse(regulation.getPaid());
+		Regulation regulation = new Regulation(regulationId, 100.000, 0.000);
+		Regulation gottenRegulation = regulationServiceInt.getRegulation(regulationId);
+		Regulation updatedRegulation = regulationServiceInt.updateRegulation(regulation);
+		Assertions.assertEquals(regulationId, updatedRegulation.getId());
+		Assertions.assertEquals(gottenRegulation.getAmountPaid() + gottenRegulation.getAmountRemaining(), updatedRegulation.getAmountPaid() + updatedRegulation.getAmountRemaining());
+		if (updatedRegulation.getAmountRemaining() != 0) {
+			Assertions.assertFalse(updatedRegulation.getPaid());
 		} else {
-			assertTrue(regulation.getPaid());
+			Assertions.assertTrue(updatedRegulation.getPaid());
 		}
 	}
 
@@ -96,7 +89,7 @@ class RegulationServiceImplTest {
 	@Order(4)
 	void testDeleteRegulation() {
 		regulationServiceInt.deleteRegulation(regulationId);
-		assertNull(regulationServiceInt.getRegulation(regulationId));
+		Assertions.assertNull(regulationServiceInt.getRegulation(regulationId));
 	}
 
 	@AfterAll

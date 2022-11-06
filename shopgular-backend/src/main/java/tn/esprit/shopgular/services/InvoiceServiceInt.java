@@ -2,11 +2,10 @@ package tn.esprit.shopgular.services;
 
 import java.util.*;
 import tn.esprit.shopgular.entities.*;
-import tn.esprit.shopgular.models.*;
 
 public interface InvoiceServiceInt {
 
-	Invoice addInvoice(InvoiceModel invoiceModel);
+	Invoice addInvoice(Invoice invoice);
 
 	List<Invoice> getAllInvoices();
 

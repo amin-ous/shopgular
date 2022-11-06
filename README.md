@@ -51,6 +51,7 @@ An ecommerce platform built with Spring Boot and Angular.
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 4. Add your Docker credentials with ID `shopgular-docker` in Jenkins.  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 5. Change `DOCKER_USERNAME` to your Docker username in Jenkinfile.  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 6. Import Grafana dashboard with ID `9964`.  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 7. Change `EMAIL_ADDRESS` to your Email address in Jenkinsfile.  
 
 ## License
 

@@ -9,6 +9,8 @@ import lombok.*;
 @AllArgsConstructor
 public class InvoiceModel {
 
+	private Long id;
+
 	private Set<InvoiceItemModel> items;
 
 }
