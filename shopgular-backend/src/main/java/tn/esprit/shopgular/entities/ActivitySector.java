@@ -11,7 +11,6 @@ import lombok.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@RequiredArgsConstructor
 public class ActivitySector implements Serializable {
 
 	static final long serialVersionUID = 1L;
@@ -20,14 +19,23 @@ public class ActivitySector implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@NonNull
 	private String code;
 
-	@NonNull
 	private String wording;
 
 	@JsonIgnore
 	@ManyToMany(mappedBy = "activitySectors")
 	private Set<Supplier> suppliers;
+
+	public ActivitySector(String code, String wording) {
+		this.code = code;
+		this.wording = wording;
+	}
+
+	public ActivitySector(Long id, String code, String wording) {
+		this.id = id;
+		this.code = code;
+		this.wording = wording;
+	}
 
 }

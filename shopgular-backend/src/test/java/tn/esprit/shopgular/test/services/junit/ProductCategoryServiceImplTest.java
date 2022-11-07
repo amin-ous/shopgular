@@ -1,7 +1,5 @@
 package tn.esprit.shopgular.test.services.junit;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import java.io.*;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.MethodOrderer.*;
@@ -10,7 +8,6 @@ import org.springframework.beans.factory.annotation.*;
 import org.springframework.boot.test.context.*;
 import org.springframework.test.context.junit4.*;
 import tn.esprit.shopgular.entities.*;
-import tn.esprit.shopgular.models.*;
 import tn.esprit.shopgular.services.*;
 
 @SpringBootTest
@@ -53,36 +50,36 @@ class ProductCategoryServiceImplTest {
 	@Test
 	@Order(1)
 	void testAddProductCategory() throws IOException {
-		ProductCategoryModel productCategoryModel = new ProductCategoryModel("TAPC", "Test Add Product Category");
-		ProductCategory productCategory = productCategoryServiceInt.addProductCategory(productCategoryModel);
-		bufferedWriter.write("productCategoryId = " + productCategory.getId() + "\n");
+		ProductCategory productCategory = new ProductCategory("TAPC", "Test Add Product Category");
+		ProductCategory addedProductCategory = productCategoryServiceInt.addProductCategory(productCategory);
+		bufferedWriter.write("productCategoryId = " + addedProductCategory.getId() + "\n");
 		bufferedWriter.close();
-		assertNotNull(productCategory.getId());
-		assertEquals(productCategory.getCode(), productCategoryModel.getCode());
-		assertEquals(productCategory.getWording(), productCategoryModel.getWording());
+		Assertions.assertNotNull(addedProductCategory.getId());
+		Assertions.assertEquals(productCategory.getCode(), addedProductCategory.getCode());
+		Assertions.assertEquals(productCategory.getWording(), addedProductCategory.getWording());
 	}
 
 	@Test
 	@Order(2)
 	void testGetAllProductCategorys() {
-		assertEquals(initialSize + 1, productCategoryServiceInt.getAllProductCategories().size());
+		Assertions.assertEquals(initialSize + 1, productCategoryServiceInt.getAllProductCategories().size());
 	}
 
 	@Test
 	@Order(3)
 	void testUpdateProductCategory() {
-		ProductCategoryModel productCategoryModel = new ProductCategoryModel(productCategoryId, "TUPC", "Test Update Product Category");
-		ProductCategory productCategory = productCategoryServiceInt.updateProductCategory(productCategoryModel);
-		assertEquals(productCategory.getId(), productCategoryId);
-		assertEquals(productCategory.getCode(), productCategoryModel.getCode());
-		assertEquals(productCategory.getWording(), productCategoryModel.getWording());
+		ProductCategory productCategory = new ProductCategory(productCategoryId, "TUPC", "Test Update Product Category");
+		ProductCategory updatedProductCategory = productCategoryServiceInt.updateProductCategory(productCategory);
+		Assertions.assertEquals(productCategoryId, updatedProductCategory.getId());
+		Assertions.assertEquals(productCategory.getCode(), updatedProductCategory.getCode());
+		Assertions.assertEquals(productCategory.getWording(), updatedProductCategory.getWording());
 	}
 
 	@Test
 	@Order(4)
 	void testDeleteProductCategory() {
 		productCategoryServiceInt.deleteProductCategory(productCategoryId);
-		assertNull(productCategoryServiceInt.getProductCategory(productCategoryId));
+		Assertions.assertNull(productCategoryServiceInt.getProductCategory(productCategoryId));
 	}
 
 	@AfterAll

@@ -1,9 +1,6 @@
 package tn.esprit.shopgular.test.services.junit;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import java.io.*;
-import java.util.*;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.MethodOrderer.*;
 import org.junit.runner.*;
@@ -11,7 +8,6 @@ import org.springframework.beans.factory.annotation.*;
 import org.springframework.boot.test.context.*;
 import org.springframework.test.context.junit4.*;
 import tn.esprit.shopgular.entities.*;
-import tn.esprit.shopgular.models.*;
 import tn.esprit.shopgular.services.*;
 
 @SpringBootTest
@@ -25,6 +21,7 @@ class SupplierServiceImplTest {
 
 	File tempFile;
 	Integer initialSize;
+	Long supplierDetailsId;
 	Long supplierId;
 	BufferedWriter bufferedWriter;
 
@@ -44,6 +41,8 @@ class SupplierServiceImplTest {
 		while ((line = bufferedReader.readLine()) != null) {
 			if (line.contains("initialSize")) {
 				initialSize = Integer.parseInt(line.substring(14));
+			} else if (line.contains("supplierDetailsId")) {
+				supplierDetailsId = Long.parseLong(line.substring(20));
 			} else if (line.contains("supplierId")) {
 				supplierId = Long.parseLong(line.substring(13));
 			}
@@ -54,42 +53,46 @@ class SupplierServiceImplTest {
 	@Test
 	@Order(1)
 	void testAddSupplier() throws IOException {
-		SupplierDetailsModel supplierDetailsModel = new SupplierDetailsModel("add.supplier@shopgular.tn", "Ben Arous, Tunisia", "98TUN7654");
-		SupplierModel supplierModel = new SupplierModel("TAS", "Test Add Supplier", SupplierCategory.ORDINARY, supplierDetailsModel);
-		Supplier supplier = supplierServiceInt.addSupplier(supplierModel);
-		bufferedWriter.write("supplierId = " + supplier.getId() + "\n");
+		SupplierDetails supplierDetails = new SupplierDetails("add.supplier@shopgular.tn", "Ben Arous, Tunisia", "98TU7654");
+		Supplier supplier = new Supplier("TAS", "Test Add Supplier", SupplierCategory.ORDINARY, supplierDetails);
+		Supplier addedSupplier = supplierServiceInt.addSupplier(supplier);
+		bufferedWriter.write("supplierDetailsId = " + addedSupplier.getDetails().getId() + "\n");
+		bufferedWriter.write("supplierId = " + addedSupplier.getId() + "\n");
 		bufferedWriter.close();
-		assertNotNull(supplier.getId());
-		assertEquals(supplier.getCode(), supplierModel.getCode());
-		assertEquals(supplier.getWording(), supplierModel.getWording());
-		assertEquals(supplier.getCategory(), supplierModel.getCategory());
-		assertNotNull(supplier.getDetails());
+		Assertions.assertNotNull(addedSupplier.getId());
+		Assertions.assertEquals(supplier.getCode(), addedSupplier.getCode());
+		Assertions.assertEquals(supplier.getWording(), addedSupplier.getWording());
+		Assertions.assertEquals(supplier.getCategory(), addedSupplier.getCategory());
+		Assertions.assertNotNull(addedSupplier.getDetails());
 	}
 
 	@Test
 	@Order(2)
 	void testGetAllSuppliers() {
-		assertEquals(initialSize + 1, supplierServiceInt.getAllSuppliers().size());
+		Assertions.assertEquals(initialSize + 1, supplierServiceInt.getAllSuppliers().size());
 	}
 
 	@Test
 	@Order(3)
 	void testUpdateSupplier() {
-		SupplierDetailsModel supplierDetailsModel = new SupplierDetailsModel("update.supplier@shopgular.tn", "Ariana, Tunisia", "123TUN4567", new Date());
-		SupplierModel supplierModel = new SupplierModel(supplierId, "TUS", "Test Update Supplier", SupplierCategory.AGREED, supplierDetailsModel);
-		Supplier supplier = supplierServiceInt.updateSupplier(supplierModel);
-		assertEquals(supplier.getId(), supplierId);
-		assertEquals(supplier.getCode(), supplierModel.getCode());
-		assertEquals(supplier.getWording(), supplierModel.getWording());
-		assertEquals(supplier.getCategory(), supplierModel.getCategory());
-		assertNotNull(supplier.getDetails());
+		SupplierDetails supplierDetails = new SupplierDetails(supplierDetailsId, "update.supplier@shopgular.tn", "Ariana, Tunisia", "123TU4567");
+		Supplier supplier = new Supplier(supplierId, "TUS", "Test Update Supplier", SupplierCategory.AGREED, supplierDetails);
+		Supplier updatedSupplier = supplierServiceInt.updateSupplier(supplier);
+		Assertions.assertEquals(supplierId, updatedSupplier.getId());
+		Assertions.assertEquals(supplier.getCode(), updatedSupplier.getCode());
+		Assertions.assertEquals(supplier.getWording(), updatedSupplier.getWording());
+		Assertions.assertEquals(supplier.getCategory(), updatedSupplier.getCategory());
+		Assertions.assertEquals(supplierDetailsId, updatedSupplier.getDetails().getId());
+		Assertions.assertEquals(supplierDetails.getEmail(), updatedSupplier.getDetails().getEmail());
+		Assertions.assertEquals(supplierDetails.getAddress(), updatedSupplier.getDetails().getAddress());
+		Assertions.assertEquals(supplierDetails.getSerialNumber(), updatedSupplier.getDetails().getSerialNumber());
 	}
 
 	@Test
 	@Order(4)
 	void testDeleteSupplier() {
 		supplierServiceInt.deleteSupplier(supplierId);
-		assertNull(supplierServiceInt.getSupplier(supplierId));
+		Assertions.assertNull(supplierServiceInt.getSupplier(supplierId));
 	}
 
 	@AfterAll

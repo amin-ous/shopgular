@@ -1,7 +1,5 @@
 package tn.esprit.shopgular.test.services.junit;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import java.io.*;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.MethodOrderer.*;
@@ -10,7 +8,6 @@ import org.springframework.beans.factory.annotation.*;
 import org.springframework.boot.test.context.*;
 import org.springframework.test.context.junit4.*;
 import tn.esprit.shopgular.entities.*;
-import tn.esprit.shopgular.models.*;
 import tn.esprit.shopgular.services.*;
 
 @SpringBootTest
@@ -53,36 +50,36 @@ class ActivitySectorServiceImplTest {
 	@Test
 	@Order(1)
 	void testAddActivitySector() throws IOException {
-		ActivitySectorModel activitySectorModel = new ActivitySectorModel("TAAS", "Test Add Activity Sector");
-		ActivitySector activitySector = activitySectorServiceInt.addActivitySector(activitySectorModel);
-		bufferedWriter.write("activitySectorId = " + activitySector.getId() + "\n");
+		ActivitySector activitySector = new ActivitySector("TAAS", "Test Add Activity Sector");
+		ActivitySector addedActivitySector = activitySectorServiceInt.addActivitySector(activitySector);
+		bufferedWriter.write("activitySectorId = " + addedActivitySector.getId() + "\n");
 		bufferedWriter.close();
-		assertNotNull(activitySector.getId());
-		assertEquals(activitySector.getCode(), activitySectorModel.getCode());
-		assertEquals(activitySector.getWording(), activitySectorModel.getWording());
+		Assertions.assertNotNull(addedActivitySector.getId());
+		Assertions.assertEquals(activitySector.getCode(), addedActivitySector.getCode());
+		Assertions.assertEquals(activitySector.getWording(), addedActivitySector.getWording());
 	}
 
 	@Test
 	@Order(2)
 	void testGetAllActivitySectors() {
-		assertEquals(initialSize + 1, activitySectorServiceInt.getAllActivitySectors().size());
+		Assertions.assertEquals(initialSize + 1, activitySectorServiceInt.getAllActivitySectors().size());
 	}
 
 	@Test
 	@Order(3)
 	void testUpdateActivitySector() {
-		ActivitySectorModel activitySectorModel = new ActivitySectorModel(activitySectorId, "TUAS", "Test Update Activity Sector");
-		ActivitySector activitySector = activitySectorServiceInt.updateActivitySector(activitySectorModel);
-		assertEquals(activitySector.getId(), activitySectorId);
-		assertEquals(activitySector.getCode(), activitySectorModel.getCode());
-		assertEquals(activitySector.getWording(), activitySectorModel.getWording());
+		ActivitySector activitySector = new ActivitySector(activitySectorId, "TUAS", "Test Update Activity Sector");
+		ActivitySector updatedActivitySector = activitySectorServiceInt.updateActivitySector(activitySector);
+		Assertions.assertEquals(activitySectorId, updatedActivitySector.getId());
+		Assertions.assertEquals(activitySector.getCode(), updatedActivitySector.getCode());
+		Assertions.assertEquals(activitySector.getWording(), updatedActivitySector.getWording());
 	}
 
 	@Test
 	@Order(4)
 	void testDeleteActivitySector() {
 		activitySectorServiceInt.deleteActivitySector(activitySectorId);
-		assertNull(activitySectorServiceInt.getActivitySector(activitySectorId));
+		Assertions.assertNull(activitySectorServiceInt.getActivitySector(activitySectorId));
 	}
 
 	@AfterAll

@@ -20,7 +20,8 @@ public class ActivitySectorRestController {
 	@ResponseBody
 	@PostMapping("/add-activity-sector")
 	public ActivitySector addActivitySector(@RequestBody ActivitySectorModel activitySectorModel) {
-		return activitySectorServiceInt.addActivitySector(activitySectorModel);
+		ActivitySector activitySector = new ActivitySector(activitySectorModel.getCode(), activitySectorModel.getWording());
+		return activitySectorServiceInt.addActivitySector(activitySector);
 	}
 
 	@ResponseBody
@@ -38,7 +39,8 @@ public class ActivitySectorRestController {
 	@ResponseBody
 	@PutMapping("/update-activity-sector")
 	public ActivitySector updateActivitySector(@RequestBody ActivitySectorModel activitySectorModel) {
-		return activitySectorServiceInt.updateActivitySector(activitySectorModel);
+		ActivitySector activitySector = new ActivitySector(activitySectorModel.getId(), activitySectorModel.getCode(), activitySectorModel.getWording());
+		return activitySectorServiceInt.updateActivitySector(activitySector);
 	}
 
 	@ResponseBody

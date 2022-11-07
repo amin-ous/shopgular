@@ -5,7 +5,6 @@ import javax.transaction.*;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.stereotype.*;
 import tn.esprit.shopgular.entities.*;
-import tn.esprit.shopgular.models.*;
 import tn.esprit.shopgular.repositories.*;
 
 @Service
@@ -18,8 +17,9 @@ public class RegulationServiceImpl implements RegulationServiceInt {
 	RegulationRepository regulationRepository;
 
 	@Override
-	public Regulation addRegulation(RegulationModel regulationModel) {
-		Regulation regulation = new Regulation(regulationModel.getAmountPaid(), regulationModel.getAmountRemaining(), new Date(), regulationModel.getAmountRemaining() == 0);
+	public Regulation addRegulation(Regulation regulation) {
+		regulation.setCreationDate(new Date());
+		regulation.setPaid(regulation.getAmountRemaining() == 0);
 		regulationRepository.save(regulation);
 		return regulation;
 	}
@@ -50,13 +50,13 @@ public class RegulationServiceImpl implements RegulationServiceInt {
 	}
 
 	@Override
-	public Regulation updateRegulation(RegulationModel regulationModel) {
-		Regulation regulation = getRegulation(regulationModel.getId());
-		regulation.setAmountPaid(Optional.ofNullable(regulationModel.getAmountPaid()).orElse(regulation.getAmountPaid()));
-		regulation.setAmountRemaining(Optional.ofNullable(regulationModel.getAmountRemaining()).orElse(regulation.getAmountRemaining()));
-		regulation.setPaid(regulationModel.getAmountRemaining() == 0);
-		regulationRepository.save(regulation);
-		return regulation;
+	public Regulation updateRegulation(Regulation regulation) {
+		Regulation targetedRegulation = getRegulation(regulation.getId());
+		targetedRegulation.setAmountPaid(Optional.ofNullable(regulation.getAmountPaid()).orElse(targetedRegulation.getAmountPaid()));
+		targetedRegulation.setAmountRemaining(Optional.ofNullable(regulation.getAmountRemaining()).orElse(targetedRegulation.getAmountRemaining()));
+		targetedRegulation.setPaid(regulation.getAmountRemaining() == 0);
+		regulationRepository.save(targetedRegulation);
+		return targetedRegulation;
 	}
 
 	@Override

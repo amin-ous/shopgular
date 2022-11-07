@@ -11,7 +11,6 @@ import lombok.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@RequiredArgsConstructor
 public class ProductCategory implements Serializable {
 
 	static final long serialVersionUID = 1L;
@@ -20,14 +19,23 @@ public class ProductCategory implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@NonNull
 	private String code;
 
-	@NonNull
 	private String wording;
 
 	@JsonIgnore
 	@OneToMany(mappedBy = "category")
 	private Set<Product> products;
+
+	public ProductCategory(String code, String wording) {
+		this.code = code;
+		this.wording = wording;
+	}
+
+	public ProductCategory(Long id, String code, String wording) {
+		this.id = id;
+		this.code = code;
+		this.wording = wording;
+	}
 
 }

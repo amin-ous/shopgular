@@ -11,7 +11,6 @@ import lombok.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@RequiredArgsConstructor
 public class SupplierDetails implements Serializable {
 
 	static final long serialVersionUID = 1L;
@@ -20,21 +19,30 @@ public class SupplierDetails implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@NonNull
 	private String email;
 
-	@NonNull
 	private String address;
 
-	@NonNull
 	private String serialNumber;
 
-	@NonNull
 	@Temporal(TemporalType.DATE)
 	private Date collaborationDate;
 
 	@JsonIgnore
 	@OneToOne(mappedBy = "details")
 	private Supplier supplier;
+
+	public SupplierDetails(String email, String address, String serialNumber) {
+		this.email = email;
+		this.address = address;
+		this.serialNumber = serialNumber;
+	}
+
+	public SupplierDetails(Long id, String email, String address, String serialNumber) {
+		this.id = id;
+		this.email = email;
+		this.address = address;
+		this.serialNumber = serialNumber;
+	}
 
 }
