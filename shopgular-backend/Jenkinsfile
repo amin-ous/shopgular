@@ -2,7 +2,7 @@ pipeline {
     environment {
         IMAGE = ""
         WORKDIR = "shopgular-backend"
-        REGISTRY = "DOCKER_USERNAME/shopgular"
+        REGISTRY = "oumaymahalouani/shopgular"
         VERSION = "backend-1.0.0-$BUILD_NUMBER"
         RECIPIENT = "EMAIL_ADDRESS"
     }
@@ -10,7 +10,7 @@ pipeline {
     options { timestamps() }
     tools { maven 'MAVEN_HOME' }
     stages {
-        stage('Sending email') {
+       /* stage('Sending email') {
             steps {
                 emailext(
                     attachLog: true,
@@ -19,7 +19,7 @@ pipeline {
                     to: RECIPIENT
                 )
             }
-        }
+        }*/
         stage('Cloning repository') {
             steps {
                 git branch: 'master', credentialsId: 'shopgular-git', url: 'https://github.com/amin-ous/shopgular.git'
