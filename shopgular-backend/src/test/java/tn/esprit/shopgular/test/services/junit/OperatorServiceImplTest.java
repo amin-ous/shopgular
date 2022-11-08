@@ -1,6 +1,7 @@
 package tn.esprit.shopgular.test.services.junit;
 
 import java.io.*;
+import lombok.extern.slf4j.*;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.MethodOrderer.*;
 import org.junit.runner.*;
@@ -11,7 +12,7 @@ import org.springframework.test.context.junit4.*;
 import tn.esprit.shopgular.entities.*;
 import tn.esprit.shopgular.services.*;
 
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 @SpringBootTest
 @RunWith(SpringRunner.class)
 @TestMethodOrder(OrderAnnotation.class)
@@ -62,15 +63,15 @@ class OperatorServiceImplTest {
 		Assertions.assertNotNull(addedOperator.getId());
 		Assertions.assertEquals(operator.getSurname(), addedOperator.getSurname());
 		Assertions.assertEquals(operator.getPrename(), addedOperator.getPrename());
-		log.info(operator.getCurrentPassword() + "rawPassword");
-		log.info(addedOperator.getCurrentPassword() + "encodedPassword");
 		Assertions.assertTrue(passwordEncoder.matches(rawPassword, addedOperator.getCurrentPassword()));
+		log.info("Operator has been successfully added");
 	}
 
 	@Test
 	@Order(2)
 	void testGetAllOperators() {
 		Assertions.assertEquals(initialSize + 1, operatorServiceInt.getAllOperators().size());
+		log.info("Operators have been successfully retrieved");
 	}
 
 	@Test
@@ -81,6 +82,7 @@ class OperatorServiceImplTest {
 		Assertions.assertEquals(operatorId, updatedOperator.getId());
 		Assertions.assertEquals(operator.getSurname(), updatedOperator.getSurname());
 		Assertions.assertEquals(operator.getPrename(), updatedOperator.getPrename());
+		log.info("Operator has been successfully updated");
 	}
 
 	@Test
@@ -88,6 +90,7 @@ class OperatorServiceImplTest {
 	void testDeleteOperator() {
 		operatorServiceInt.deleteOperator(operatorId);
 		Assertions.assertNull(operatorServiceInt.getOperator(operatorId));
+		log.info("Operator has been successfully deleted");
 	}
 
 	@AfterAll

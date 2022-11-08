@@ -1,6 +1,7 @@
 package tn.esprit.shopgular.test.services.junit;
 
 import java.io.*;
+import lombok.extern.slf4j.*;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.MethodOrderer.*;
 import org.junit.runner.*;
@@ -10,6 +11,7 @@ import org.springframework.test.context.junit4.*;
 import tn.esprit.shopgular.entities.*;
 import tn.esprit.shopgular.services.*;
 
+@Slf4j
 @SpringBootTest
 @RunWith(SpringRunner.class)
 @TestMethodOrder(OrderAnnotation.class)
@@ -62,12 +64,14 @@ class RegulationServiceImplTest {
 		} else {
 			Assertions.assertTrue(addedRegulation.getPaid());
 		}
+		log.info("Regulation has been successfully added");
 	}
 
 	@Test
 	@Order(2)
 	void testGetAllRegulations() {
 		Assertions.assertEquals(initialSize + 1, regulationServiceInt.getAllRegulations().size());
+		log.info("Regulations have been successfully retrieved");
 	}
 
 	@Test
@@ -83,6 +87,7 @@ class RegulationServiceImplTest {
 		} else {
 			Assertions.assertTrue(updatedRegulation.getPaid());
 		}
+		log.info("Regulation has been successfully updated");
 	}
 
 	@Test
@@ -90,6 +95,7 @@ class RegulationServiceImplTest {
 	void testDeleteRegulation() {
 		regulationServiceInt.deleteRegulation(regulationId);
 		Assertions.assertNull(regulationServiceInt.getRegulation(regulationId));
+		log.info("Regulation has been successfully deleted");
 	}
 
 	@AfterAll

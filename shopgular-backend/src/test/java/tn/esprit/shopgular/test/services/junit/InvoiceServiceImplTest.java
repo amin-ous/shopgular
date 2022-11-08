@@ -2,6 +2,7 @@ package tn.esprit.shopgular.test.services.junit;
 
 import java.io.*;
 import java.util.*;
+import lombok.extern.slf4j.*;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.MethodOrderer.*;
 import org.junit.runner.*;
@@ -11,6 +12,7 @@ import org.springframework.test.context.junit4.*;
 import tn.esprit.shopgular.entities.*;
 import tn.esprit.shopgular.services.*;
 
+@Slf4j
 @SpringBootTest
 @RunWith(SpringRunner.class)
 @TestMethodOrder(OrderAnnotation.class)
@@ -74,12 +76,15 @@ class InvoiceServiceImplTest {
 		}
 		Assertions.assertFalse(addedInvoice.getArchived());
 		Assertions.assertEquals(1, addedInvoice.getItems().size());
+		log.info("Invoice has been successfully added");
 	}
 
 	@Test
 	@Order(2)
 	void testGetAllInvoices() {
 		Assertions.assertEquals(initialSize + 1, invoiceServiceInt.getAllInvoices().size());
+		log.info("Invoices have been successfully retrieved");
+
 	}
 
 	@Test
@@ -87,6 +92,7 @@ class InvoiceServiceImplTest {
 	void testCancelInvoice() {
 		Invoice canceledInvoice = invoiceServiceInt.cancelInvoice(invoiceId);
 		Assertions.assertTrue(canceledInvoice.getArchived());
+		log.info("Invoice has been successfully canceled");
 	}
 
 	@Test
@@ -96,6 +102,7 @@ class InvoiceServiceImplTest {
 		Assertions.assertNull(productServiceInt.getProduct(productId));
 		invoiceServiceInt.deleteInvoice(invoiceId);
 		Assertions.assertNull(invoiceServiceInt.getInvoice(productId));
+		log.info("Invoice has been successfully deleted");
 	}
 
 	@AfterAll
