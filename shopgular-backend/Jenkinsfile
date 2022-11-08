@@ -3,7 +3,7 @@ pipeline {
         IMAGE = ""
         WORKDIR = "shopgular-backend"
         REGISTRY = "emnamagdouli/shopgular"
-        VERSION = "backend-0.1.0-$BUILD_NUMBER"
+        VERSION = "backend-1.0.0-$BUILD_NUMBER"
         RECIPIENT = "emnamag01@gmail.com"
     }
     agent any
