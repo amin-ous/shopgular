@@ -52,6 +52,7 @@ Vagrant.configure(2) do |config|
   config.vm.network "forwarded_port", guest: 8089, host: 8089 ### Tomcat ###
   config.vm.network "forwarded_port", guest: 9000, host: 9000 ### SonarQube ###
   config.vm.network "forwarded_port", guest: 9090, host: 9090 ### Prometheus ###
+  config.vm.network "forwarded_port", guest: 9323, host: 9323 ### Docker ###
 
   # sync: folder 'shopgular' (host machine) -> folder '/app' (guest machine)
   config.vm.synced_folder './', '/app', owner: 'vagrant', group: 'vagrant'
