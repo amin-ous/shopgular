@@ -2,9 +2,9 @@ pipeline {
     environment {
         IMAGE = ""
         WORKDIR = "shopgular-backend"
-        REGISTRY = "DOCKER_USERNAME/shopgular"
-        VERSION = "backend-1.0.0-$BUILD_NUMBER"
-        RECIPIENT = "EMAIL_ADDRESS"
+        REGISTRY = "emnamagdouli/shopgular"
+        VERSION = "backend-0.1.0-$BUILD_NUMBER"
+        RECIPIENT = "emnamag01@gmail.com"
     }
     agent any
     options { timestamps() }
