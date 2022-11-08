@@ -4,5 +4,5 @@ COPY . /tmp/shopgular-backend/
 RUN mvn clean install -DskipTests
 
 FROM openjdk:8-jdk-alpine
-COPY --from=builder /tmp/shopgular-backend/target/shopgular-2.0.1.jar .
-ENTRYPOINT ["java", "-jar", "/shopgular-2.0.1.jar"]
+COPY --from=builder /tmp/shopgular-backend/target/shopgular-2.0.2.jar .
+ENTRYPOINT ["java", "-jar", "/shopgular-2.0.2.jar"]

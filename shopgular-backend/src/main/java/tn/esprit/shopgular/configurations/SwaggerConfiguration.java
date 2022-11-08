@@ -25,7 +25,7 @@ public class SwaggerConfiguration {
 	}
 
 	private ApiInfo apiEndPointsInfo() {
-		return new ApiInfoBuilder().title("shopgular").version("2.0.1").build();
+		return new ApiInfoBuilder().title("shopgular").version("2.0.2").build();
 	}
 
 	private ApiKey apiKey() {
