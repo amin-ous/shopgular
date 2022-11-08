@@ -47,7 +47,7 @@ services:
     security_opt:
       - no-new-privileges:true
   shopgular-backend:
-    image: shopgular-backend:1.0.0
+    image: shopgular-backend:2.0.0
     container_name: shopgular-backend
     restart: on-failure
     ports:
