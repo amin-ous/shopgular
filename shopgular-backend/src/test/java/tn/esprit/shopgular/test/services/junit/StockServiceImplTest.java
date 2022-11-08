@@ -1,6 +1,7 @@
 package tn.esprit.shopgular.test.services.junit;
 
 import java.io.*;
+import lombok.extern.slf4j.*;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.MethodOrderer.*;
 import org.junit.runner.*;
@@ -10,6 +11,7 @@ import org.springframework.test.context.junit4.*;
 import tn.esprit.shopgular.entities.*;
 import tn.esprit.shopgular.services.*;
 
+@Slf4j
 @SpringBootTest
 @RunWith(SpringRunner.class)
 @TestMethodOrder(OrderAnnotation.class)
@@ -57,12 +59,14 @@ class StockServiceImplTest {
 		Assertions.assertNotNull(addedStock.getId());
 		Assertions.assertEquals(stock.getCurrentQuantity(), addedStock.getCurrentQuantity());
 		Assertions.assertEquals(stock.getMinimumQuantity(), addedStock.getMinimumQuantity());
+		log.info("Stock has been successfully added");
 	}
 
 	@Test
 	@Order(2)
 	void testGetAllStocks() {
 		Assertions.assertEquals(initialSize + 1, stockServiceInt.getAllStocks().size());
+		log.info("Stocks have been successfully retrieved");
 	}
 
 	@Test
@@ -73,6 +77,7 @@ class StockServiceImplTest {
 		Assertions.assertEquals(stockId, updatedStock.getId());
 		Assertions.assertEquals(stock.getCurrentQuantity(), updatedStock.getCurrentQuantity());
 		Assertions.assertEquals(stock.getMinimumQuantity(), updatedStock.getMinimumQuantity());
+		log.info("Stock has been successfully updated");
 	}
 
 	@Test
@@ -80,6 +85,7 @@ class StockServiceImplTest {
 	void testDeleteStock() {
 		stockServiceInt.deleteStock(stockId);
 		Assertions.assertNull(stockServiceInt.getStock(stockId));
+		log.info("Stock has been successfully deleted");
 	}
 
 	@AfterAll

@@ -1,6 +1,7 @@
 package tn.esprit.shopgular.test.services.junit;
 
 import java.io.*;
+import lombok.extern.slf4j.*;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.MethodOrderer.*;
 import org.junit.runner.*;
@@ -10,6 +11,7 @@ import org.springframework.test.context.junit4.*;
 import tn.esprit.shopgular.entities.*;
 import tn.esprit.shopgular.services.*;
 
+@Slf4j
 @SpringBootTest
 @RunWith(SpringRunner.class)
 @TestMethodOrder(OrderAnnotation.class)
@@ -64,12 +66,14 @@ class SupplierServiceImplTest {
 		Assertions.assertEquals(supplier.getWording(), addedSupplier.getWording());
 		Assertions.assertEquals(supplier.getCategory(), addedSupplier.getCategory());
 		Assertions.assertNotNull(addedSupplier.getDetails());
+		log.info("Supplier has been successfully added");
 	}
 
 	@Test
 	@Order(2)
 	void testGetAllSuppliers() {
 		Assertions.assertEquals(initialSize + 1, supplierServiceInt.getAllSuppliers().size());
+		log.info("Suppliers have been successfully retrieved");
 	}
 
 	@Test
@@ -86,6 +90,7 @@ class SupplierServiceImplTest {
 		Assertions.assertEquals(supplierDetails.getEmail(), updatedSupplier.getDetails().getEmail());
 		Assertions.assertEquals(supplierDetails.getAddress(), updatedSupplier.getDetails().getAddress());
 		Assertions.assertEquals(supplierDetails.getSerialNumber(), updatedSupplier.getDetails().getSerialNumber());
+		log.info("Supplier has been successfully updated");
 	}
 
 	@Test
@@ -93,6 +98,7 @@ class SupplierServiceImplTest {
 	void testDeleteSupplier() {
 		supplierServiceInt.deleteSupplier(supplierId);
 		Assertions.assertNull(supplierServiceInt.getSupplier(supplierId));
+		log.info("Supplier has been successfully deleted");
 	}
 
 	@AfterAll

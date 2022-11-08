@@ -1,6 +1,7 @@
 package tn.esprit.shopgular.test.services.junit;
 
 import java.io.*;
+import lombok.extern.slf4j.*;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.MethodOrderer.*;
 import org.junit.runner.*;
@@ -10,6 +11,7 @@ import org.springframework.test.context.junit4.*;
 import tn.esprit.shopgular.entities.*;
 import tn.esprit.shopgular.services.*;
 
+@Slf4j
 @SpringBootTest
 @RunWith(SpringRunner.class)
 @TestMethodOrder(OrderAnnotation.class)
@@ -57,12 +59,14 @@ class ActivitySectorServiceImplTest {
 		Assertions.assertNotNull(addedActivitySector.getId());
 		Assertions.assertEquals(activitySector.getCode(), addedActivitySector.getCode());
 		Assertions.assertEquals(activitySector.getWording(), addedActivitySector.getWording());
+		log.info("Activity sector has been successfully added");
 	}
 
 	@Test
 	@Order(2)
 	void testGetAllActivitySectors() {
 		Assertions.assertEquals(initialSize + 1, activitySectorServiceInt.getAllActivitySectors().size());
+		log.info("Activity sectors have been successfully retrieved");
 	}
 
 	@Test
@@ -73,6 +77,7 @@ class ActivitySectorServiceImplTest {
 		Assertions.assertEquals(activitySectorId, updatedActivitySector.getId());
 		Assertions.assertEquals(activitySector.getCode(), updatedActivitySector.getCode());
 		Assertions.assertEquals(activitySector.getWording(), updatedActivitySector.getWording());
+		log.info("Activity sector has been successfully updated");
 	}
 
 	@Test
@@ -80,6 +85,7 @@ class ActivitySectorServiceImplTest {
 	void testDeleteActivitySector() {
 		activitySectorServiceInt.deleteActivitySector(activitySectorId);
 		Assertions.assertNull(activitySectorServiceInt.getActivitySector(activitySectorId));
+		log.info("Activity sector has been successfully deleted");
 	}
 
 	@AfterAll

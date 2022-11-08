@@ -107,6 +107,16 @@ echo "Installing Docker Engine..."
 echo "Starting Docker..."
     systemctl start docker && systemctl enable docker
 
+echo "Configuring Docker for Grafana"
+    if [[ ! -e /etc/docker/daemon.json ]]; then
+        touch /etc/docker/daemon.json
+        echo "{" >> /etc/docker/daemon.json
+        echo "  \"metrics-addr\" : \"0.0.0.0:9090\"," >> /etc/docker/daemon.json
+        echo "  \"experimental\" : true" >> /etc/docker/daemon.json
+        echo "}" >> /etc/docker/daemon.json
+    fi
+    sudo systemctl restart docker
+
 echo "Configuring Prometheus..."
     if [[ ! -e /etc/prometheus/prometheus.yml ]]; then
         mkdir -p /etc/prometheus
@@ -126,6 +136,9 @@ echo "Configuring Prometheus..."
         echo "    metrics_path: /prometheus" >> /etc/prometheus/prometheus.yml
         echo "    static_configs:" >> /etc/prometheus/prometheus.yml
         echo "      - targets: ['192.168.56.1:8080']" >> /etc/prometheus/prometheus.yml
+        echo "  - job_name: 'docker'" >> /etc/prometheus/prometheus.yml
+        echo "    static_configs:" >> /etc/prometheus/prometheus.yml
+        echo "      - targets: ['192.168.56.1:9323']" >> /etc/prometheus/prometheus.yml
     fi
 
 echo "Installing Ngrok..."

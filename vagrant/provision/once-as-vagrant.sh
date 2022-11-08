@@ -16,3 +16,5 @@ echo "Enabling colorized prompt for guest console..."
 echo "Configuring Grafana..."
     curl 'http://admin:admin@localhost:3000/api/datasources' -X POST -H 'Content-Type: application/json;charset=UTF-8' --data-binary \
     '{"name":"Jenkins: Performance and Health Overview","type":"prometheus","url":"http://192.168.56.1:9090","access":"proxy","isDefault":true,"jsonData":{"httpMethod":"POST"}}'
+    curl 'http://admin:admin@localhost:3000/api/datasources' -X POST -H 'Content-Type: application/json;charset=UTF-8' --data-binary \
+    '{"name":"Docker: Performance and Health Overview","type":"prometheus","url":"http://192.168.56.1:9090","access":"proxy","isDefault":true,"jsonData":{"httpMethod":"POST"}}'
