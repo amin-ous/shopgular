@@ -9,6 +9,7 @@ import org.hibernate.validator.constraints.*;
 @Entity
 @Getter
 @Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class InvoiceItem implements Serializable {
