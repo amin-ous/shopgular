@@ -5,7 +5,6 @@ import javax.transaction.*;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.stereotype.*;
 import tn.esprit.shopgular.entities.*;
-import tn.esprit.shopgular.models.*;
 import tn.esprit.shopgular.repositories.*;
 
 @Service
@@ -24,24 +23,27 @@ public class InvoiceServiceImpl implements InvoiceServiceInt {
 	RegulationRepository regulationRepository;
 
 	@Override
-	public Invoice addInvoice(InvoiceModel invoiceModel) {
+	public Invoice addInvoice(Invoice invoice) {
 		Double netPrice = 0.000;
 		Double deduction = 0.000;
-		Set<InvoiceItemModel> invoiceItemsModels = invoiceModel.getItems();
-		Set<InvoiceItem> invoiceItems = new HashSet<>();
-		for (InvoiceItemModel invoiceItemModel : invoiceItemsModels) {
-			Product product = productRepository.getById(invoiceItemModel.getProduct().getId());
-			Double listPrice = invoiceItemModel.getQuantity() * product.getListPrice();
-			Double discount = (listPrice * invoiceItemModel.getPercentDecrease()) / 100;
-			Double salePrice = listPrice - discount;
-			InvoiceItem invoiceItem = new InvoiceItem(salePrice, discount,
-			invoiceItemModel.getPercentDecrease(), invoiceItemModel.getQuantity(), invoiceItemModel.getProduct());
+		Set<InvoiceItem> invoiceItems = invoice.getItems();
+		for (InvoiceItem invoiceItem : invoiceItems) {
+			Product product = productRepository.getById(invoiceItem.getProduct().getId());
+			Double listPrice = invoiceItem.getQuantity() * product.getListPrice();
+			Double discount = (listPrice * invoiceItem.getPercentDecrease()) / 100;
+			invoiceItem.setDiscount(discount);
 			deduction = deduction + discount;
+			Double salePrice = listPrice - discount;
+			invoiceItem.setSalePrice(salePrice);
 			netPrice = netPrice + salePrice;
-			invoiceItems.add(invoiceItem);
 			invoiceItemRepository.save(invoiceItem);
 		}
-		Invoice invoice = new Invoice(netPrice, deduction, new Date(), new Date(), false, invoiceItems);
+		invoice.setNetPrice(netPrice);
+		invoice.setDeduction(deduction);
+		invoice.setCreationDate(new Date());
+		invoice.setLastModificationDate(new Date());
+		invoice.setArchived(false);
+		invoice.setItems(invoiceItems);
 		invoiceRepository.save(invoice);
 		return invoice;
 	}
@@ -88,11 +90,11 @@ public class InvoiceServiceImpl implements InvoiceServiceInt {
 
 	@Override
 	public Invoice cancelInvoice(Long invoiceId) {
-		Invoice invoice = getInvoice(invoiceId);
-		invoice.setLastModificationDate(new Date());
-		invoice.setArchived(true);
-		invoiceRepository.save(invoice);
-		return invoice;
+		Invoice targetedActivitySector = getInvoice(invoiceId);
+		targetedActivitySector.setLastModificationDate(new Date());
+		targetedActivitySector.setArchived(true);
+		invoiceRepository.save(targetedActivitySector);
+		return targetedActivitySector;
 	}
 
 	@Override

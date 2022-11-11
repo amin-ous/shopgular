@@ -21,7 +21,8 @@ public class RegulationRestController {
 	@ResponseBody
 	@PostMapping("/add-regulation")
 	public Regulation addRegulation(@RequestBody RegulationModel regulationModel) {
-		return regulationServiceInt.addRegulation(regulationModel);
+		Regulation regulation = new Regulation(regulationModel.getAmountPaid(), regulationModel.getAmountRemaining());
+		return regulationServiceInt.addRegulation(regulation);
 	}
 
 	@ResponseBody
@@ -52,7 +53,8 @@ public class RegulationRestController {
 	@ResponseBody
 	@PutMapping("/update-regulation")
 	public Regulation updateRegulation(@RequestBody RegulationModel regulationModel) {
-		return regulationServiceInt.updateRegulation(regulationModel);
+		Regulation regulation = new Regulation(regulationModel.getId(), regulationModel.getAmountPaid(), regulationModel.getAmountRemaining());
+		return regulationServiceInt.updateRegulation(regulation);
 	}
 
 	@ResponseBody

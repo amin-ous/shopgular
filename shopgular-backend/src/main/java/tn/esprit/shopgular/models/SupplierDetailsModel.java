@@ -7,16 +7,14 @@ import lombok.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@RequiredArgsConstructor
 public class SupplierDetailsModel {
 
-	@NonNull
+	private Long id;
+
 	private String email;
 
-	@NonNull
 	private String address;
 
-	@NonNull
 	private String serialNumber;
 
 	private Date collaborationDate;

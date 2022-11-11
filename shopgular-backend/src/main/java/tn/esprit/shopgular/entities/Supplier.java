@@ -9,9 +9,9 @@ import lombok.*;
 @Entity
 @Getter
 @Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@RequiredArgsConstructor
 public class Supplier implements Serializable {
 
 	static final long serialVersionUID = 1L;
@@ -20,13 +20,10 @@ public class Supplier implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@NonNull
 	private String code;
 
-	@NonNull
 	private String wording;
 
-	@NonNull
 	@Enumerated(EnumType.STRING)
 	private SupplierCategory category;
 
@@ -40,5 +37,20 @@ public class Supplier implements Serializable {
 	@JsonIgnore
 	@OneToMany(mappedBy = "supplier")
 	private Set<Invoice> invoices;
+
+	public Supplier(String code, String wording, SupplierCategory category, SupplierDetails details) {
+		this.code = code;
+		this.wording = wording;
+		this.category = category;
+		this.details = details;
+	}
+
+	public Supplier(Long id, String code, String wording, SupplierCategory category, SupplierDetails details) {
+		this.id = id;
+		this.code = code;
+		this.wording = wording;
+		this.category = category;
+		this.details = details;
+	}
 
 }

@@ -11,7 +11,6 @@ import lombok.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@RequiredArgsConstructor
 public class Operator implements Serializable {
 
 	static final long serialVersionUID = 1L;
@@ -20,17 +19,30 @@ public class Operator implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@NonNull
-	private String name;
+	private String surname;
 
-	@NonNull
 	private String prename;
 
-	@NonNull
-	private String password;
+	private String oldPassword;
+
+	private String currentPassword;
 
 	@JsonIgnore
 	@OneToMany
 	private Set<Invoice> invoices;
+
+	public Operator(String surname, String prename, String currentPassword) {
+		this.surname = surname;
+		this.prename = prename;
+		this.currentPassword = currentPassword;
+	}
+
+	public Operator(Long id, String surname, String prename, String oldPassword, String currentPassword) {
+		this.id = id;
+		this.surname = surname;
+		this.prename = prename;
+		this.oldPassword = oldPassword;
+		this.currentPassword = currentPassword;
+	}
 
 }

@@ -21,7 +21,13 @@ public class InvoiceRestController {
 	@ResponseBody
 	@PostMapping("/add-invoice")
 	public Invoice addInvoice(@RequestBody InvoiceModel invoiceModel) {
-		return invoiceServiceInt.addInvoice(invoiceModel);
+		Set<InvoiceItem> invoiceItems = new HashSet<>();
+		for (InvoiceItemModel invoiceItemModel : invoiceModel.getItems()) {
+			InvoiceItem invoiceItem = new InvoiceItem(invoiceItemModel.getPercentDecrease(), invoiceItemModel.getQuantity(), invoiceItemModel.getProduct());
+			invoiceItems.add(invoiceItem);
+		}
+		Invoice invoice = new Invoice(invoiceItems);
+		return invoiceServiceInt.addInvoice(invoice);
 	}
 
 	@ResponseBody

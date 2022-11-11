@@ -2,11 +2,10 @@ package tn.esprit.shopgular.services;
 
 import java.util.*;
 import tn.esprit.shopgular.entities.*;
-import tn.esprit.shopgular.models.*;
 
 public interface StockServiceInt {
 
-	Stock addStock(StockModel stockModel);
+	Stock addStock(Stock stock);
 
 	List<Stock> getAllStocks();
 
@@ -14,7 +13,7 @@ public interface StockServiceInt {
 
 	String getStockStatus();
 
-	Stock updateStock(StockModel stockModel);
+	Stock updateStock(Stock stock);
 
 	void deleteStock(Long stockId);
 

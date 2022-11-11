@@ -3,12 +3,23 @@ pipeline {
         IMAGE = ""
         WORKDIR = "shopgular-backend"
         REGISTRY = "DOCKER_USERNAME/shopgular"
-        VERSION = "backend-0.1.0-$BUILD_NUMBER"
+        VERSION = "backend-1.0.0-$BUILD_NUMBER"
+        RECIPIENT = "EMAIL_ADDRESS"
     }
     agent any
     options { timestamps() }
     tools { maven 'MAVEN_HOME' }
     stages {
+        stage('Sending email') {
+            steps {
+                emailext(
+                    attachLog: true,
+                    body: 'You received this email because we have detected a new build job from Jenkins. Please refer to the attachment below for more details. \n\nRegards, \nThe Shopgular Team',
+                    subject: '[Jenkins Pipeline]',
+                    to: RECIPIENT
+                )
+            }
+        }
         stage('Cloning repository') {
             steps {
                 git branch: 'master', credentialsId: 'shopgular-git', url: 'https://github.com/amin-ous/shopgular.git'

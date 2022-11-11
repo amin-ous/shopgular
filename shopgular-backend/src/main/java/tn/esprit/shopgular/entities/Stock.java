@@ -11,7 +11,6 @@ import lombok.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@RequiredArgsConstructor
 public class Stock implements Serializable {
 
 	static final long serialVersionUID = 1L;
@@ -20,17 +19,27 @@ public class Stock implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@NonNull
 	private String wording;
 
-	@NonNull
 	private Integer currentQuantity;
 
-	@NonNull
 	private Integer minimumQuantity;
 
 	@JsonIgnore
 	@OneToMany(mappedBy = "stock")
 	private Set<Product> products;
+
+	public Stock(String wording, Integer currentQuantity, Integer minimumQuantity) {
+		this.wording = wording;
+		this.currentQuantity = currentQuantity;
+		this.minimumQuantity = minimumQuantity;
+	}
+
+	public Stock(Long id, String wording, Integer currentQuantity, Integer minimumQuantity) {
+		this.id = id;
+		this.wording = wording;
+		this.currentQuantity = currentQuantity;
+		this.minimumQuantity = minimumQuantity;
+	}
 
 }

@@ -11,7 +11,6 @@ import lombok.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@RequiredArgsConstructor
 public class Product implements Serializable {
 
 	static final long serialVersionUID = 1L;
@@ -20,20 +19,15 @@ public class Product implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@NonNull
 	private String code;
 
-	@NonNull
 	private String wording;
 
-	@NonNull
 	private Double listPrice;
 
-	@NonNull
 	@Temporal(TemporalType.DATE)
 	private Date creationDate;
 
-	@NonNull
 	@Temporal(TemporalType.DATE)
 	private Date lastModificationDate;
 
@@ -48,5 +42,18 @@ public class Product implements Serializable {
 	@JsonIgnore
 	@OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private Set<InvoiceItem> items;
+
+	public Product(String code, String wording, Double listPrice) {
+		this.code = code;
+		this.wording = wording;
+		this.listPrice = listPrice;
+	}
+
+	public Product(Long id, String code, String wording, Double listPrice) {
+		this.id = id;
+		this.code = code;
+		this.wording = wording;
+		this.listPrice = listPrice;
+	}
 
 }

@@ -2,11 +2,10 @@ package tn.esprit.shopgular.services;
 
 import java.util.*;
 import tn.esprit.shopgular.entities.*;
-import tn.esprit.shopgular.models.*;
 
 public interface ProductServiceInt {
 
-	Product addProduct(ProductModel productModel);
+	Product addProduct(Product product);
 
 	List<Product> getAllProducts();
 
@@ -14,7 +13,7 @@ public interface ProductServiceInt {
 
 	double getPeriodicProductRevenue(Long productId, Date startDate, Date endDate);
 
-	Product updateProduct(ProductModel productModel);
+	Product updateProduct(Product product);
 
 	void assignProductToStock(Long productId, Long stockId);
 

@@ -9,9 +9,9 @@ import lombok.*;
 @Entity
 @Getter
 @Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@RequiredArgsConstructor
 public class Invoice implements Serializable {
 
 	static final long serialVersionUID = 1L;
@@ -20,24 +20,18 @@ public class Invoice implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@NonNull
 	private Double netPrice;
 
-	@NonNull
 	private Double deduction;
 
-	@NonNull
 	@Temporal(TemporalType.DATE)
 	private Date creationDate;
 
-	@NonNull
 	@Temporal(TemporalType.DATE)
 	private Date lastModificationDate;
 
-	@NonNull
 	private Boolean archived;
 
-	@NonNull
 	@OneToMany(mappedBy = "invoice", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private Set<InvoiceItem> items;
 
@@ -48,5 +42,14 @@ public class Invoice implements Serializable {
 	@JsonIgnore
 	@OneToMany(mappedBy = "invoice")
 	private Set<Regulation> regulations;
+
+	public Invoice(Set<InvoiceItem> items) {
+		this.items = items;
+	}
+
+	public Invoice(Long id, Set<InvoiceItem> items) {
+		this.id = id;
+		this.items = items;
+	}
 
 }
