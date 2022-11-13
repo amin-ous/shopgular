@@ -111,11 +111,11 @@ echo "Configuring Docker for Grafana"
     if [[ ! -e /etc/docker/daemon.json ]]; then
         touch /etc/docker/daemon.json
         echo "{" >> /etc/docker/daemon.json
-        echo "  \"metrics-addr\" : \"0.0.0.0:9090\"," >> /etc/docker/daemon.json
+        echo "  \"metrics-addr\" : \"0.0.0.0:9323\"," >> /etc/docker/daemon.json
         echo "  \"experimental\" : true" >> /etc/docker/daemon.json
         echo "}" >> /etc/docker/daemon.json
     fi
-    sudo systemctl restart docker
+    systemctl restart docker
 
 echo "Configuring Prometheus..."
     if [[ ! -e /etc/prometheus/prometheus.yml ]]; then
@@ -146,8 +146,8 @@ echo "Installing Ngrok..."
     cd /usr/local/bin && tar xf /usr/tmp/ngrok-v3-stable-linux-amd64.tgz
 
 echo "Starting backend containers..."
-    if [ ! "$(cd /app/shopgular-backend && docker compose ps -a)" ]; then
-        docker compose build && docker compose up -d && docker restart portainer > /dev/null 2>&1
+    if [ ! "$(docker ps -a | grep "shopgular-backend")" ]; then
+        cd /app/shopgular-backend && docker compose build && docker compose up -d && docker restart portainer > /dev/null 2>&1
     fi
 
 echo "Installing Nginx..."
@@ -157,6 +157,6 @@ echo "Starting Nginx..."
     systemctl start nginx && systemctl enable nginx
 
 echo "Starting frontend containers..."
-    if [ ! "$(cd /app/shopgular-frontend && docker compose ps -a)" ]; then
-        docker compose build && docker compose up -d
+    if [ ! "$(docker ps -a | grep "shopgular-frontend")" ]; then
+        cd /app/shopgular-frontend && docker compose build && docker compose up -d
     fi
